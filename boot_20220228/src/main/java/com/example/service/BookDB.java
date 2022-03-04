@@ -10,4 +10,14 @@ import org.springframework.stereotype.Service;
 public interface BookDB {
     // 일괄 등록
     public int insertBatchBook(List<Book> list);
+
+    // 목록(페이지+검색)
+    public List<Book> selectListPageSearchBook(int page, String text);
+
+    // 페이지네이션용(검색)
+    public long countSearchBook(String text);
+
+    // 삭제하기
+    public int deleteBook(long code);
+
 }

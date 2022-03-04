@@ -11,10 +11,10 @@
 </head>
 
 <body>
-    <div style="padding: 20px;">
+    <div style="padding:20px">
         <h3>도서 일괄 등록</h3>
-        <hr>
-        <form th:action="@{/admin/insert}" method="post">
+        <hr />
+        <form th:action="@{/admin/insertbatch}" method="post">
             <table class="table">
                 <tr>
                     <th>제목</th>
@@ -22,10 +22,11 @@
                     <th>저자</th>
                     <th>분류</th>
                 </tr>
+
                 <tr th:each="i : ${#numbers.sequence(1,2)}">
-                    <td><input type="text" value="1" name="title"></td>
-                    <td><input type="number" value="100" min="100" name="price"></td>
-                    <td><input type="text" value="가나다" name="writer"></td>
+                    <td><input type="text" value="1" name="title" /></td>
+                    <td><input type="text" value="2" name="price" /></td>
+                    <td><input type="text" value="가나다" name="writer" /></td>
                     <td>
                         <select name="category">
                             <option>A</option>
@@ -35,10 +36,10 @@
                     </td>
                 </tr>
             </table>
-            <input type="submit" class="btn btn-primary" value="도서일괄등록">
+
+            <input type="submit" class="btn btn-primary" value="도서일괄등록" />
         </form>
     </div>
-
 </body>
 
 </html>
