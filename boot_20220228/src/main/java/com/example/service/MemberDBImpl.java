@@ -48,7 +48,7 @@ public class MemberDBImpl implements MemberDB {
             Member member = new Member();
             member.setUserid(id);
             DeleteResult result = mongodb.remove(member);
-            if(result.getDeletedCount() == 1L){
+            if (result.getDeletedCount() == 1L) {
                 return 1;
             }
             return 0;
@@ -65,7 +65,7 @@ public class MemberDBImpl implements MemberDB {
             query.addCriteria(criteria);
             return mongodb.findOne(query, Member.class);
         } catch (Exception e) {
-            e.printStackTrace();    // 개발자를 위한 출력(debug용)
+            e.printStackTrace(); // 개발자를 위한 출력(debug용)
             return null;
         }
     }
@@ -82,9 +82,8 @@ public class MemberDBImpl implements MemberDB {
             Update update = new Update();
             update.set("username", member.getUsername());
             update.set("userage", member.getUserage());
-            UpdateResult result = 
-                mongodb.updateFirst(query, update, Member.class);
-            if(result.getModifiedCount() == 1L){
+            UpdateResult result = mongodb.updateFirst(query, update, Member.class);
+            if (result.getModifiedCount() == 1L) {
                 return 1;
             }
             return 0;
@@ -92,7 +91,7 @@ public class MemberDBImpl implements MemberDB {
             e.printStackTrace();
             return -1;
         }
-        
+
     }
 
     @Override
@@ -108,5 +107,36 @@ public class MemberDBImpl implements MemberDB {
             return null;
         }
     }
-    
+
+    @Override
+    public long updateMemberPassword(Member member) {
+        try {
+            Query query = new Query();
+            query.addCriteria(Criteria.where("_id").is(member.getUserid()));
+            query.addCriteria(Criteria.where("userpw").is(member.getUserpw()));
+            Update update = new Update();
+            update.set("userpw", member.getNewPw());
+            update.set("userpw1", member.getNewPw());
+            UpdateResult result = mongodb.updateFirst(query, update, Member.class);
+            return result.getModifiedCount();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1L;
+        }
+    }
+
+    @Override
+    public long withdrawMember(Member member) {
+        try {
+            Query query = new Query();
+            query.addCriteria(Criteria.where("_id").is(member.getUserid()));
+            query.addCriteria(Criteria.where("userpw").is(member.getUserpw()));
+            DeleteResult result = mongodb.remove(query, Member.class);
+            return result.getDeletedCount();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1L;
+        }
+    }
+
 }

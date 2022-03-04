@@ -1,6 +1,7 @@
 package com.example.entity;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Getter;
@@ -27,4 +28,9 @@ public class Member {
     private String username = null;
 
     private int userage = 0;
+
+    // 일시적 (컬럼으로 만들어 지지 않음)
+    // 개발에서 필요한 정보를 보관하기 위한 용도
+    @Transient
+    private String newPw = null;
 }
