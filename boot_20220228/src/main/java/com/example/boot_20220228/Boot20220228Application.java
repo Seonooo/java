@@ -6,12 +6,19 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.session.data.mongo.JdkMongoSessionConverter;
 import org.springframework.session.data.mongo.config.annotation.web.http.EnableMongoHttpSession;
 
 @SpringBootApplication
-@EnableMongoHttpSession(collectionName = "sessions", maxInactiveIntervalInSeconds = 1800)
+
+// 임의로 만들 컨트롤러 서비스의 위치
 @ComponentScan(basePackages = { "com.example.controller", "com.example.service" })
+
+// 임의로 만든저장소 위치
+@EnableMongoRepositories(basePackages = { "com.example.repository" })
+
+@EnableMongoHttpSession(collectionName = "sessions", maxInactiveIntervalInSeconds = 1800)
 public class Boot20220228Application {
 
 	public static void main(String[] args) {

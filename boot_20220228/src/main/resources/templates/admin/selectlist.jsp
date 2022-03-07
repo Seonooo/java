@@ -25,26 +25,21 @@
         <hr>
 
         <form th:action="@{/admin/action}" method="post">
+            <input type="submit" name="btn" value="일괄삭제" />
+            <input type="submit" name="btn" value="일괄수정" />
 
-            <input type="submit" name="btn" value="일괄삭제">
-            <input type="submit" name="btn" value="일괄수정">
-            <hr>
-
-            <table class="table">
+            <table class="table table-sm">
                 <tr>
                     <th>체크</th>
-                    <th>도서번호</th>
+                    <th>코드</th>
                     <th>책제목</th>
                     <th>가격</th>
                     <th>저자</th>
                     <th>분류</th>
                     <th>등록일</th>
-                    <th>버튼</th>
                 </tr>
                 <tr th:each="tmp : ${list}">
-                    <td>
-                        <input type="checkbox" name="chk" th:value="${tmp.code}">
-                    </td>
+                    <td><input type="checkbox" name="chk" th:value="${tmp.code}" /></td>
                     <td th:text="${tmp.code}"></td>
                     <td th:text="${tmp.title}"></td>
                     <td th:text="${tmp.price}"></td>

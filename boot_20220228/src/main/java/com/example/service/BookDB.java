@@ -17,7 +17,13 @@ public interface BookDB {
     // 페이지네이션용(검색)
     public long countSearchBook(String text);
 
-    // 삭제하기
-    public int deleteBook(long code);
+    // 일괄 삭제하기
+    public long deleteBatchBook(List<Long> code);
+
+    // 코드에 해당하는 목록 가져오기
+    public List<Book> selectListcode(List<Long> code);
+
+    // 일괄 수정
+    public long updateBatchBook(List<Book> list);
 
 }
