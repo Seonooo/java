@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail</title>
+</head>
+
+<body>
+    <div>
+        <h3>상품상세</h3>
+        <hr>
+        <div style="display: inline-flex;">
+            <span>
+                <img th:src="@{/item/image(code=${obj.icode})}" style="width: 300px; height: 300px;">
+            </span>
+            <span>
+                물품 코드 : <span th:text="${obj.icode}"></span><br>
+                물품 이름 : <span th:text="${obj.iname}"></span><br>
+                물품 가격 : <span th:text="${obj.iprice}"></span><br>
+                물품 수량 : <select>
+                    <th:block th:if="${obj.iquantity <= 200}">
+                        <option th:each="i:${#numbers.sequence(1, obj.iquantity)}" th:text="${i}" th:value="${i}">
+                        </option>
+                    </th:block>
+
+                    <th:block th:if="${obj.iquantity > 200}">
+                        <option th:each="i:${#numbers.sequence(1, 200)}" th:text="${i}" th:value="${i}">
+                        </option>
+                    </th:block>
+                </select><br>
+                물품 내용 : <span th:text="${obj.icontent}"></span>
+            </span>
+        </div>
+        <br>
+        <th:block th:each="tmp, idx : ${list}">
+            <img th:src="@{/item/subimage(code=${tmp})}" style="width: 100px;">
+            <th:block th:if="${idx.count % 3 == 0}">
+                <br>
+            </th:block>
+        </th:block>
+
+
+    </div>
+
+</body>
+
+</html>

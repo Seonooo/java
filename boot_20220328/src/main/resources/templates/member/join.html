@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join</title>
+</head>
+
+<body>
+    <div style="padding:20px">
+        <h3>회원가입</h3>
+        <hr>
+
+        <!-- context-path를 @가 자동으로 잡아줌 -->
+        <form th:action="@{/member/join}" method="post">
+            <!-- 이메일, 암호, 이름, 연락처, 권한 -->
+            <div>
+                <label>이메일</label><br>
+                <input type="text" name="uemail">
+            </div>
+            <div>
+                <label>암호</label><br>
+                <input type="password" name="upw">
+            </div>
+            <div>
+                <label>이름</label><br>
+                <input type="text" name="uname">
+            </div>
+            <div>
+                <label>연락처</label><br>
+                <input type="text" name="uphone">
+            </div>
+
+            <div>
+                <input type="submit" value="회원가입">
+            </div>
+        </form>
+
+    </div>
+</body>
+
+</html>

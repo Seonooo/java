@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Address</title>
+</head>
+
+<body>
+    <div style="padding: 20px;">
+        <h3>주소관리</h3>
+        <hr>
+
+        <h3>주소등록</h3>
+        <form th:action="@{/member/address}" method="post">
+            우편번호 : <input type="text" name="upostcode"><br>
+            주소 : <input type="text" name="uaddress"><br>
+            <input type="submit" value="주소등록">
+
+        </form>
+
+        <h3>주소목록</h3>
+        <table border="1px">
+            <tr>
+                <th>번호</th>
+                <th>주소코드</th>
+                <th>우편번호</th>
+                <th>주소</th>
+                <th>등록일</th>
+                <th>대표주소</th>
+                <th>버튼</th>
+            </tr>
+            <tr th:each="tmp, idx : ${addr}">
+                <td th:text="${idx.count}"></td>
+                <td th:text="${tmp.ucode}"></td>
+                <td th:text="${tmp.upostcode}"></td>
+                <td th:text="${tmp.uaddress}"></td>
+                <td th:text="${tmp.uregdate}"></td>
+                <td th:text="${tmp.uchk}"></td>
+                <td>
+                    <form th:action="@{/member/setaddr}" method="post">
+                        <input type="text" name="code" th:value="${tmp.ucode}">
+                        <input type="submit" value="대표주소설정">
+                    </form>
+                    <a th:href="@{/member/updateaddr(code=${tmp.ucode})}">수정</a>
+                    <a th:href="@{/member/deleteaddr(code=${tmp.ucode})}">삭제</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</body>
+
+</html>

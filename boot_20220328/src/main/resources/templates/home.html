@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+
+<body>
+    <div style="padding: 20px;">
+        <h3>홈화면</h3>
+        <hr>
+        <div th:if=" ${session.M_EMAIL!=null}">
+            <p th:text="|${session.M_NAME} 님 로그인|"></p>
+            <form th:action="@{/member/logout}" method="post">
+                <input type="submit" value="로그아웃">
+            </form>
+            <a th:href="@{/member/address}">주소관리</a>
+        </div>
+
+
+        <h3>고객</h3>
+        <p th:text="${session.M_EMAIL}"></p>
+        <div th:if=" ${session.M_EMAIL==null}">
+            <a th:href="@{/member/login}">로그인</a>
+            <a th:href="@{/member/join}">회원가입</a>
+        </div>
+
+        <a th:href="@{/shop/home}">쇼핑몰</a>
+        <hr>
+
+
+        <h4>판매자</h4>
+        <p th:text="${session.SESSION_UEMAIL}"></p>
+        <div th:if=" ${session.SESSION_UEMAIL==null}">
+            <a th:href="@{/seller/select}">판매자로그인</a>
+            <a th:href="@{/seller/insert}">판매자등록</a>
+        </div>
+
+        <div th:if="${session.SESSION_UEMAIL != null}">
+            <a th:href="@{/item/insert}">판매자물품등록</a>
+            <a th:href="@{/seller/logout}">판매자로그아웃</a>
+            <a th:href="@{/item/selectlist}">판매자물품목록</a>
+        </div>
+
+        <hr>
+
+        <a th:href="@{/seller/selectlist}">판매자 목록(관리자)</a>
+    </div>
+</body>
+
+</html>
