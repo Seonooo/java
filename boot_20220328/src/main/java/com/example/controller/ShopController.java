@@ -4,7 +4,11 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import com.example.dto.BuyDTO;
+import com.example.dto.CartDTO;
 import com.example.dto.ItemDTO;
+import com.example.mapper.BuyMapper;
+import com.example.mapper.CartMapper;
 import com.example.mapper.ItemImageMapper;
 import com.example.mapper.ItemMapper;
 
@@ -27,21 +31,43 @@ public class ShopController {
     ItemImageMapper imgMapper;
 
     @Autowired
+    CartMapper cMapper;
+
+    @Autowired
+    BuyMapper bMapper;
+
+    @Autowired
     HttpSession httpSession;
 
+    @GetMapping(value = "/buylist")
+    public String buylistGET() {
+
+        return "/shop/buylist";
+    }
+
     @PostMapping(value = "cart")
-    public String cartPOST(@RequestParam(name = "code") long code,
+    public String cartPOST(@RequestParam(name = "btn") String btn, @RequestParam(name = "code") long code,
             @RequestParam(name = "cnt") long cnt) {
-        String em = (String) httpSession.getAttribute("M_UEMAIL");
-        if (em != null) {
-
-            return "";
-        } else {
-            httpSession.getId();
-
+        String em = (String) httpSession.getAttribute("M_EMAIL");
+        if (em == null) {
+            return "redirect:/member/login";
         }
-
-        return "redirect:/shop/detail?code=" + code;
+        if (btn.equals("장바구니")) {
+            CartDTO cart = new CartDTO();
+            cart.setCcnt(cnt);
+            cart.setIcode(code);
+            cart.setUemail(em);
+            cMapper.insertCartOne(cart);
+            return "redirect:/shop/cartlist";
+        } else if (btn.equals("주문하기")) {
+            BuyDTO buy = new BuyDTO();
+            buy.setBcnt(cnt);
+            buy.setIcode(code);
+            buy.setUemail(em);
+            bMapper.insertBuyOne(buy);
+            return "redirect:/shop/orderlist";
+        }
+        return "redirect:/";
     }
 
     @GetMapping(value = { "/", "/home" })

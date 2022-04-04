@@ -42,11 +42,13 @@ public class MemberController {
             @RequestParam(name = "uemail") String uemail,
             @RequestParam(name = "upw") String upw) {
         MemberDTO member = mMapper.memberLogin(uemail, upw);
+
         if (member != null) {
             httpSession.setAttribute("M_EMAIL", member.getUemail());
             httpSession.setAttribute("M_NAME", member.getUname());
             httpSession.setAttribute("M_ROLE", member.getUrole());
-            return "redirect:/";
+            String url = (String) httpSession.getAttribute("BACKURL");
+            return "redirect:" + url;
         }
         return "redirect:/member/login";
     }

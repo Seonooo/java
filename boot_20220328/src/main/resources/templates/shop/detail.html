@@ -12,28 +12,33 @@
     <div>
         <h3>상품상세</h3>
         <hr>
-        <div style="display: inline-flex;">
-            <span>
-                <img th:src="@{/item/image(code=${obj.icode})}" style="width: 300px; height: 300px;">
-            </span>
-            <span>
-                물품 코드 : <span th:text="${obj.icode}"></span><br>
-                물품 이름 : <span th:text="${obj.iname}"></span><br>
-                물품 가격 : <span th:text="${obj.iprice}"></span><br>
-                물품 수량 : <select>
-                    <th:block th:if="${obj.iquantity <= 200}">
-                        <option th:each="i:${#numbers.sequence(1, obj.iquantity)}" th:text="${i}" th:value="${i}">
-                        </option>
-                    </th:block>
+        <form th:action="@{/shop/cart}" method="post">
+            <div style="display: inline-flex;">
+                <span>
+                    <img th:src="@{/item/image(code=${obj.icode})}" style="width: 300px; height: 300px;">
+                </span>
+                <span>
+                    물품 코드 : <span th:text="${obj.icode}"></span><br>
+                    물품 이름 : <span th:text="${obj.iname}"></span><br>
+                    물품 가격 : <span th:text="${obj.iprice}"></span><br>
+                    물품 수량 : <select name="cnt">
+                        <th:block th:if="${obj.iquantity <= 200}">
+                            <option th:each="i:${#numbers.sequence(1, obj.iquantity)}" th:text="${i}" th:value="${i}">
+                            </option>
+                        </th:block>
 
-                    <th:block th:if="${obj.iquantity > 200}">
-                        <option th:each="i:${#numbers.sequence(1, 200)}" th:text="${i}" th:value="${i}">
-                        </option>
-                    </th:block>
-                </select><br>
-                물품 내용 : <span th:text="${obj.icontent}"></span>
-            </span>
-        </div>
+                        <th:block th:if="${obj.iquantity > 200}">
+                            <option th:each="i:${#numbers.sequence(1, 200)}" th:text="${i}" th:value="${i}">
+                            </option>
+                        </th:block>
+                    </select><br>
+                    물품 내용 : <span th:text="${obj.icontent}"></span>
+                </span>
+            </div>
+            <input type="hidden" name="code" th:value="${obj.icode}">
+            <input type="submit" name="btn" value="주문하기">
+            <input type="submit" name="btn" value="장바구니">
+        </form>
         <br>
         <th:block th:each="tmp, idx : ${list}">
             <img th:src="@{/item/subimage(code=${tmp})}" style="width: 100px;">
