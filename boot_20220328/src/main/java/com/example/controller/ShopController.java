@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -38,12 +39,6 @@ public class ShopController {
 
     @Autowired
     HttpSession httpSession;
-
-    @GetMapping(value = "/buylist")
-    public String buylistGET() {
-
-        return "/shop/buylist";
-    }
 
     @PostMapping(value = "cart")
     public String cartPOST(@RequestParam(name = "btn") String btn, @RequestParam(name = "code") long code,
@@ -95,6 +90,20 @@ public class ShopController {
         List<Long> list = imgMapper.selectItemImageCodeList(code);
         model.addAttribute("list", list);
         return "/shop/detail";
+    }
+
+    @GetMapping(value = "/buylist")
+    public String buylistGET(Model model) {
+        String em = (String) httpSession.getAttribute("M_EMAIL");
+        if (em == null) { // 로그인 되지 않았다면
+            return "redirect:/member/login";
+        }
+
+        // 로그인 되었을 때
+        List<Map<String, Object>> list = bMapper.selectBuyListMap(em);
+        model.addAttribute("list", list);
+
+        return "/shop/buylist";
     }
 
 }

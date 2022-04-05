@@ -22,4 +22,10 @@ public interface MemberMapper {
         })
         public MemberDTO memberLogin(@Param(value = "uemail") String uemail, @Param(value = "upw") String upw);
 
+        @Select({
+                        "SELECT UEMAIL, UPW, UROLE, UPHONE, UNAME FROM MEMBER",
+                        " WHERE UEMAIL=#{email}"
+        })
+        public MemberDTO memberEmail(@Param(value = "email") String em);
+
 }

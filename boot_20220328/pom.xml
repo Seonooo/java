@@ -24,6 +24,11 @@
     		<scope>runtime</scope> <!-- *** 배포시에는 삭제 -->
     	</dependency>
 
+		<!-- 스프링 시큐리티 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 
 		<!-- oracle session -->
 		<dependency>
