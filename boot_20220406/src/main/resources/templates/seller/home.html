@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>홈</title>
+</head>
+
+<body>
+    <div style="padding:20px">
+        <h3>물품목록</h3>
+        <hr />
+        <a th:href="@{/seller/insertitem}">물품등록</a>
+
+        <form th:action="@{/seller/home}" method="get">
+            <input type="text" name="txt" placeholder="검색어" />
+            <input type="submit" value="검색" />
+        </form>
+        <table border="1">
+            <tr>
+                <th>번호</th>
+                <th>물품코드</th>
+                <th>물품명</th>
+                <th>가격</th>
+                <th>수량</th>
+                <th>등록일</th>
+                <th>버튼</th>
+            </tr>
+            <tr th:each="tmp, idx : ${list}">
+                <td th:text="${idx.count}"></td>
+                <td>
+                    <a th:href="@{/seller/itemselectone(code=${tmp.icode})}" th:text="${tmp.icode}"></a>
+                </td>
+                <td th:text="${tmp.iname}"></td>
+                <td th:text="${tmp.iprice}"></td>
+                <td th:text="${tmp.iquantity}"></td>
+                <td th:text="${tmp.iregdate}"></td>
+                <td>
+                    <button th:onclick="|javascript:handleUpdate('${tmp.icode}')|">수정</button>
+                    <button th:onclick="|javascript:handleDelete('${tmp.icode}')|">삭제</button>
+                </td>
+            </tr>
+        </table>
+
+        <th:block th:each="i : ${#numbers.sequence(1, pages)}">
+            <a th:href="@{/seller/home(page=${i}, txt=${param.txt})}" th:text="${i}"></a>
+        </th:block>
+
+    </div>
+    <script>
+
+        function handleUpdate(no) {
+            // GET으로 삭제 처리 주소창을 바꿈
+            location.href = "/ROOT/seller/updateitem?code=" + no;
+        }
+        function handleDelete(no) {
+            if (confirm('삭제할까요?')) {
+                // get으로 삭제 처리 주소창을 바꿈
+                location.href = "/ROOT/seller/deleteitem?code=" + no;
+
+                // post로 처리
+                // form th:action=@{/seller/deleteitem} method=post
+                var form = document.createElement("form");
+                form.method = "post";
+                form.action = "/ROOT/seller/deleteitem";
+
+                // input type=text name=code value=no
+                var input = document.createElement("input");
+                input.type = "hidden";
+                input.name = "code";
+                input.value = no;
+
+                var input1 = document.createElement("input");
+                input1.type = "hidden";
+                input1.name = "_csrf";
+                input1.value = '[[${_csrf.token}]]';
+
+                // input type을 form태그에 추가
+                form.appendChild(input);
+                form.appendChild(input1);
+
+                // form을 document에 추가
+                document.body.appendChild(form);
+
+                // input type submit 실행
+                form.submit();
+
+            }
+
+        }
+    </script>
+</body>
+
+</html>
