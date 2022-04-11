@@ -1,7 +1,7 @@
-package com.example.Controller;
+package com.example.controller;
 
-import com.example.Service.MemberService;
 import com.example.dto.MemberDTO;
+import com.example.service.MemberService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 @Mapper
 public interface MemberMapper {
@@ -27,5 +28,11 @@ public interface MemberMapper {
                         " WHERE UEMAIL=#{email}"
         })
         public MemberDTO memberEmail(@Param(value = "email") String em);
+
+        @Update({ "update member set upw=#{upw} where uemail = #{em} " })
+        public int updateMemberPassword(@Param(value = "em") String email, @Param(value = "upw") String upw1);
+
+        @Update({ "update member set uphone=#{obj.uphone}, uname=#{obj.uname} where uemail=#{email}" })
+        public int updateMemberInfo(@Param(value = "obj") MemberDTO member, @Param(value = "email") String email);
 
 }

@@ -1,6 +1,4 @@
-package com.example.Config;
-
-import com.example.Service.UserDetailsServiceImpl;
+package com.example.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -10,27 +8,35 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import com.example.service.UserDetailsServiceImpl;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+        // 1. 직접 만든 detailService 객체 가져오기
         @Autowired
         UserDetailsServiceImpl detailsService;
 
+        // 회원가입시 암호화 했던 방법의 객체생성
+        // 2. 암호화 방법 객체 생성, @Bean은 서버 구동시 자동으로 객체 생성됨
         @Bean
         public BCryptPasswordEncoder bCryptPasswordEncoder() {
                 return new BCryptPasswordEncoder();
         }
 
+        // 3. 직접만든 detailsService에 암호화 방법 적용
         @Override
         protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-                auth.userDetailsService(detailsService).passwordEncoder(bCryptPasswordEncoder());
+                auth.userDetailsService(detailsService)
+                                .passwordEncoder(bCryptPasswordEncoder());
         }
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
+                // super.configure(http);
 
+                // 페이지별 접근 권한 설정
                 http.authorizeRequests()
                                 .antMatchers("/admin", "/admin/**")
                                 .hasAuthority("ADMIN")
@@ -40,31 +46,33 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                                 .hasAuthority("CUSTOMER")
                                 .anyRequest().permitAll();
 
+                // 로그인 페이지 설정, 단 POST는 직접 만들지 않음
                 http.formLogin()
                                 .loginPage("/member/login")
-                                .loginProcessingUrl("/member/login")
+                                .loginProcessingUrl("/member/loginaction")
                                 .usernameParameter("uemail")
                                 .passwordParameter("upw")
                                 .defaultSuccessUrl("/home")
                                 .permitAll();
 
+                // 로그아웃 페이지 설정, url에 맞게 POST로 호출하면 됨.
                 http.logout()
                                 .logoutUrl("/member/logout")
                                 .logoutSuccessUrl("/home")
+                                // .logoutSuccessHandler(new MyLogoutSuccessHandler())
                                 .invalidateHttpSession(true)
                                 .clearAuthentication(true)
                                 .permitAll();
 
-                // h2-console을 이용하기위해서
+                // 접근권한불가 403
+                http.exceptionHandling().accessDeniedPage("/page403");
+
+                // h2-console을 사용하기 위해서
                 http.csrf().ignoringAntMatchers("/h2-console/**");
                 http.headers().frameOptions().sameOrigin();
 
-                // 접근권한 불가
-                http.exceptionHandling().accessDeniedPage("/page403");
-
-                // rest controller사용
+                // rest controller 사용
                 http.csrf().ignoringAntMatchers("/api/**");
-
         }
 
 }

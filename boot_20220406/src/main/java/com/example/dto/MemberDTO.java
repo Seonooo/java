@@ -20,4 +20,7 @@ public class MemberDTO {
     private Date uregdate;
     // 날짜포맷을 바꿔서 보관하기 위해
     private String uregdate1;
+
+    // 변경할 암호
+    private String upw1;
 }
