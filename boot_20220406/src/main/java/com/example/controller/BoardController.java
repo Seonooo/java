@@ -3,6 +3,8 @@ package com.example.controller;
 import java.util.List;
 
 import com.example.entity.BoardEntity;
+import com.example.entity.BoardReplyEntity;
+import com.example.repository.BoardReplyRepository;
 import com.example.repository.BoardRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +26,18 @@ public class BoardController {
 
     @Autowired
     BoardRepository bRepository;
+    @Autowired
+    BoardReplyRepository brRepository;
 
     @Value("${board.page.count}")
     int PAGECNT;
+
+    @PostMapping(value = "/insertreply")
+    public String insertReply(@ModelAttribute BoardReplyEntity reply) {
+        System.out.println(reply.toString());
+        brRepository.save(reply);
+        return "redirect:/board/selectone?no=" + reply.getBoard().getNo();
+    }
 
     @GetMapping(value = "/insert")
     public String insertGET() {
@@ -61,7 +72,9 @@ public class BoardController {
     @GetMapping(value = "/selectone")
     public String selectOneGET(@Param(value = "no") long no, Model model) {
         BoardEntity board = bRepository.findById(no).orElse(null);
-        model.addAttribute("board", board);
+        List<BoardReplyEntity> replist = brRepository.findByBoard_noOrderByNoDesc(no);
+        model.addAttribute("brd", board);
+        model.addAttribute("repList", replist);
         return "/board/selectone";
     }
 

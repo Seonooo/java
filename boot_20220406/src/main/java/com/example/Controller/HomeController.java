@@ -42,9 +42,11 @@ public class HomeController {
         return "home";
     }
 
-    @GetMapping(value = "/page403")
-    public String page403GET() {
-        return "page403";
+    // 127.0.0.1:9090/ROOT/vue
+    @GetMapping(value = "/vue")
+    public String vueGET() {
+        // vue에서 빌드한 index.html파일의 위치
+        return "/vue/index";
     }
 
     // <img th:src="@{/item/image(code=1)}" style="width:100px" />

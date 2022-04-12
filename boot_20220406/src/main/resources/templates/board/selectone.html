@@ -14,11 +14,11 @@
         <hr />
 
         <form th:action="@{/board/selectone}" method="post">
-            <p th:text="|글번호 :  ${board.no}|"></p>
-            <p th:text="|제목 :  ${board.title}|"></p>
-            <p th:text="|내용 :  ${board.content}|"></p>
-            <p th:text="|조회수 :  ${board.hit}|"></p>
-            <p th:text="|등록일 :  ${board.regdate}|"></p>
+            <p th:text="|글번호 :  ${brd.no}|"></p>
+            <p th:text="|제목 :  ${brd.title}|"></p>
+            <p th:text="|내용 :  ${brd.content}|"></p>
+            <p th:text="|조회수 :  ${brd.hit}|"></p>
+            <p th:text="|등록일 :  ${brd.regdate}|"></p>
             <input type="submit" value="물품변경" />
         </form>
 
@@ -27,6 +27,25 @@
         <button>이전글</button>
         <button>다음글</button>
         <a th:href="@{/board/selectlist}"><button>목록</button></a>
+
+        <hr>
+        <form th:action="@{/board/insertreply(bno=${brd.no})}" method="post">
+            <input type="hidden" name="board.no" th:value="${brd.no}">
+            <input type="text" name="writer" placeholder="작성자"><br>
+            <textarea rows="3" cols="22" name="content" placeholder="답글내용"></textarea>
+            <input type="submit" value="답글작성"><br>
+        </form>
+        <hr>
+
+        <h3>답글목록</h3>
+        <table border="1">
+            <tr th:each="retp : ${repList}">
+                <td th:text="|답글 번호 : ${retp.no}|"></td>
+                <td th:text="|답글 작성자 : ${retp.writer}|"></td>
+                <td th:text="|답글 내용 : ${retp.content}|"></td>
+            </tr>
+
+        </table>
 
     </div>
 </body>
