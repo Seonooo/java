@@ -1,10 +1,12 @@
 package com.example.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.example.dto.ItemDTO;
 import com.example.mapper.ItemMapper;
+import com.example.repository.BuyRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,6 +32,9 @@ public class SellerController {
     @Autowired
     ItemMapper iMapper;
 
+    @Autowired
+    BuyRepository buyRepository;
+
     // n개 5개 일때는 1~5, 6~10 10개 1~10, 11~20
 
     @GetMapping(value = { "/", "/home" })
@@ -43,6 +48,12 @@ public class SellerController {
 
             long cnt = iMapper.selectItemCount(txt, user.getUsername());
             model.addAttribute("pages", (cnt - 1) / PAGECNT + 1);
+
+            List<Long> itemCode = new ArrayList<>();
+            for (int i = 1; i < list.size(); i++) {
+                itemCode.add(list.get(i).getIcode());
+            }
+            // List<Long> sellerItem = buyRepository.findByItem_icodeIn(itemCode);
             return "/seller/home";
         }
         return "redirect:/member/login";

@@ -49,29 +49,84 @@
         </th:block>
 
     </div>
+    <script src="https://unpkg.com/mqtt@4.3.7/dist/mqtt.min.js"></script>
     <script>
+        const state = {
+            message: '',  // 보낼 메세지 
+            client: '', // 접속한 클라이언트 객체
 
+            options: {
+                clean: true, //세션 초기화
+                reconnectPeriod: 20000, // 주기적인 접속 시간
+
+                // 고유값 ex)d200, d212 등
+                clientId: 'd218_' + new Date().getTime(),
+                username: 'ds606', // 아이디
+                password: 'ds606', // 암호
+            },
+
+            topic: 'ds/class606/#',
+            qos: 0,  // 0부터 2까지의 숫자
+        };
+
+        const url = 'ws://1.234.5.158:11884';
+        try {
+            state.client = mqtt.connect(url, state.options);
+            console.log(state.client);
+
+            state.client.on('connect', () => {
+                console.log('connect success!!');
+            });
+
+            state.client.on('error', () => {
+                console.log('connect error!!');
+            });
+
+            state.client.on('message', (topic, message) => {
+                console.log(topic, JSON.parse(message));
+                location.reload(); //F5을 누름
+            });
+
+            state.client.subscribe(state.topic, { qos: state.qos }, (error, res) => {
+                if (error) {
+                    console.log('subscribe topic error', error);
+                    return;
+                }
+                console.log('subscribe success', res);
+            });
+        }
+        catch (e) {
+            console.log('mqtt error', e);
+        }
+
+
+
+
+
+        /////////////////////////////////////////////////////////////
         function handleUpdate(no) {
             // GET으로 삭제 처리 주소창을 바꿈
             location.href = "/ROOT/seller/updateitem?code=" + no;
         }
+
         function handleDelete(no) {
             if (confirm('삭제할까요?')) {
-                // get으로 삭제 처리 주소창을 바꿈
-                location.href = "/ROOT/seller/deleteitem?code=" + no;
+                console.log(no);
+                // GET으로 삭제 처리 주소창을 바꿈
+                // location.href="/ROOT/seller/deleteitem?code=" + no;
 
-                // post로 처리
-                // form th:action=@{/seller/deleteitem} method=post
+                // POST으로 처리
+                //<form th:action="@{/seller/deleteitem}" method="post">
                 var form = document.createElement("form");
                 form.method = "post";
                 form.action = "/ROOT/seller/deleteitem";
 
-                // input type=text name=code value=no
+                //<input type="text" name="code" value="전달되는 번호" />
                 var input = document.createElement("input");
-                input.type = "hidden";
                 input.name = "code";
                 input.value = no;
 
+                // 시큐리티를 csrf 토큰값 전송용
                 var input1 = document.createElement("input");
                 input1.type = "hidden";
                 input1.name = "_csrf";
@@ -81,14 +136,12 @@
                 form.appendChild(input);
                 form.appendChild(input1);
 
-                // form을 document에 추가
+                // form document에 추가
                 document.body.appendChild(form);
 
-                // input type submit 실행
+                // <input type="submit">를 누름
                 form.submit();
-
             }
-
         }
     </script>
 </body>

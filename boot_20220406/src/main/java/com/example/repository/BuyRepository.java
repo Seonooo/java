@@ -16,7 +16,11 @@ public interface BuyRepository
 
     BuyProjection findByBno(Long bno);
 
+    // 고객용 주문내용
     List<BuyProjection> findByMember_uemail(String uemail);
+
+    // 판매자용 주문내용
+    List<BuyProjection> findByItem_icodeIn(List<Long> icode);
 
     // select * from 테이블 where 1 order by bno asc
     List<BuyProjection> findByOrderByBnoAsc();

@@ -13,8 +13,8 @@ public interface MemberMapper {
 
         @Insert({
                         "INSERT INTO MEMBER",
-                        "(UEMAIL, UPW, UNAME, UPHONE, UROLE, UREGDATE)",
-                        " VALUES(#{obj.uemail}, #{obj.upw}, #{obj.uname}, #{obj.uphone}, #{obj.urole}, CURRENT_DATE)" })
+                        "(UEMAIL, UPW, UNAME, UPHONE, UROLE, UREGDATE) ",
+                        " VALUES(#{obj.uemail}, #{obj.upw}, #{obj.uname}, #{obj.uphone}, #{obj.urole}, CURRENT_DATE) " })
         public int memberJoin(@Param(value = "obj") MemberDTO member);
 
         @Select({

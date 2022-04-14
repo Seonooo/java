@@ -49,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 로그인 페이지 설정, 단 POST는 직접 만들지 않음
                 http.formLogin()
                                 .loginPage("/member/login")
-                                .loginProcessingUrl("/member/loginaction")
+                                .loginProcessingUrl("/member/login")
                                 .usernameParameter("uemail")
                                 .passwordParameter("upw")
                                 .defaultSuccessUrl("/home")

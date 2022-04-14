@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,6 +17,7 @@ import com.example.entity.BuyEntity;
 import com.example.entity.BuyProjection;
 import com.example.entity.ItemEntity;
 import com.example.entity.MemberEntity;
+import com.example.jwt.JwtUtil;
 import com.example.repository.BuyRepository;
 
 @RestController
@@ -24,6 +26,9 @@ public class BuyRestController {
 
         @Autowired
         BuyRepository bRepository;
+
+        @Autowired
+        JwtUtil jwtUtil;
 
         @RequestMapping(value = "/insert", method = { RequestMethod.POST }, consumes = {
                         MediaType.ALL_VALUE }, produces = {
@@ -60,6 +65,32 @@ public class BuyRestController {
                 Map<String, Object> map = new HashMap<String, Object>();
                 bRepository.save(buyEntity);
                 map.put("status", 200);
+                return map;
+        }
+
+        @RequestMapping(value = "/insert2", method = { RequestMethod.POST }, consumes = {
+                        MediaType.ALL_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE })
+        public Map<String, Object> buyInsert2Post(
+                        @RequestBody BuyEntity buyEntity, @RequestHeader(name = "token") String token) {
+                Map<String, Object> map = new HashMap<String, Object>();
+                try {
+                        // 토큰에서 이메일 추출
+                        String email = jwtUtil.extractUsername(token);
+
+                        // 회원엔티티 객체 생성 및 이메일 추가
+                        MemberEntity memberEntity = new MemberEntity();
+                        memberEntity.setUemail(email);
+
+                        // 주문엔티티에 추가
+                        buyEntity.setMember(memberEntity);
+
+                        // 저장소를 이용해서 DB에 추가
+                        bRepository.save(buyEntity);
+                        map.put("status", 200);
+                } catch (Exception e) {
+                        e.printStackTrace();
+                        map.put("status", 0);
+                }
                 return map;
         }
 
