@@ -5,11 +5,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.dto.ItemDTO;
+import com.example.entity.BuyProjection;
+import com.example.entity.ItemEntity;
+import com.example.entity.MemberEntity;
 import com.example.mapper.ItemMapper;
 import com.example.repository.BuyRepository;
+import com.example.service.ItemService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
@@ -35,7 +40,94 @@ public class SellerController {
     @Autowired
     BuyRepository buyRepository;
 
-    // n개 5개 일때는 1~5, 6~10 10개 1~10, 11~20
+    @Autowired
+    ResourceLoader resLoader;
+
+    @Autowired
+    ItemService iService;
+
+    @GetMapping(value = "/deleteupdatebatch")
+    public String deleteupdateBatchGet(@RequestParam(name = "btn") String btn, @RequestParam(name = "no") Long[] no,
+            Model model) {
+        if (btn.equals("일괄수정")) {
+            List<ItemEntity> list = iService.selectItemEntityIn(no);
+            model.addAttribute("list", list);
+            return "seller/updatebatch";
+        } else if (btn.equals("일괄삭제")) {
+            iService.deleteItemBatch(no);
+        }
+        return "redirect:/seller/home";
+    }
+
+    @PostMapping(value = "/updateitembatch")
+    public String updateItemBatchPost(
+            @RequestParam(name = "iname") String[] iname,
+            @RequestParam(name = "icode") Long[] icode,
+            @RequestParam(name = "icontent") String[] icontent,
+            @RequestParam(name = "iprice") Long[] iprice,
+            @RequestParam(name = "iquantity") Long[] iquantity) {
+
+        List<ItemEntity> list = new ArrayList<>();
+        for (int i = 0; i < iname.length; i++) {
+            ItemEntity item = new ItemEntity();
+            item.setIcode(icode[i]);
+            item.setIname(iname[i]);
+            item.setIcontent(icontent[i]);
+            item.setIprice(iprice[i]);
+            item.setIquantity(iquantity[i]);
+
+            list.add(item);
+        }
+
+        iService.updateItemBatch(list);
+        return "redirect:/seller/home";
+    }
+
+    @GetMapping(value = "/insertbatch")
+    public String insertBatchGet() {
+        return "seller/insertbatch";
+    }
+
+    @PostMapping(value = "/insertitembatch")
+    public String insertBatchPOST(
+            @AuthenticationPrincipal User user,
+            @RequestParam(name = "iname") String[] iname,
+            @RequestParam(name = "icontent") String[] icontent,
+            @RequestParam(name = "iprice") Long[] iprice,
+            @RequestParam(name = "iquantity") Long[] iquantity,
+            @RequestParam(name = "timage") MultipartFile[] iimage)
+            throws IOException {
+
+        List<ItemEntity> list = new ArrayList<>();
+        for (int i = 0; i < iname.length; i++) {
+            System.out.println(iname[i]);
+            System.out.println(icontent[i]);
+            System.out.println(iprice[i]);
+            System.out.println(iquantity[i]);
+            System.out.println(iimage[i].getOriginalFilename());
+
+            ItemEntity item = new ItemEntity();
+            item.setIname(iname[i]);
+            item.setIcontent(icontent[i]);
+            item.setIprice(iprice[i]);
+            item.setIquantity(iquantity[i]);
+
+            item.setIimage(iimage[i].getBytes());
+            item.setIimagename(iimage[i].getOriginalFilename());
+            item.setIimagesize(iimage[i].getSize());
+            item.setIimagetype(iimage[i].getContentType());
+
+            MemberEntity member = new MemberEntity();
+            member.setUemail(user.getUsername());
+            item.setMember(member);
+
+            list.add(item);
+        }
+
+        iService.insertItemBatch(list);
+
+        return "redirect:/seller/home";
+    }
 
     @GetMapping(value = { "/", "/home" })
     public String sellerGET(@RequestParam(name = "page", defaultValue = "1") int page,
@@ -49,10 +141,13 @@ public class SellerController {
             long cnt = iMapper.selectItemCount(txt, user.getUsername());
             model.addAttribute("pages", (cnt - 1) / PAGECNT + 1);
 
-            List<Long> itemCode = new ArrayList<>();
-            for (int i = 1; i < list.size(); i++) {
-                itemCode.add(list.get(i).getIcode());
+            List<Long> list1 = new ArrayList<>();
+            for (ItemDTO item : list) {
+                list1.add(item.getIcode());
             }
+            List<BuyProjection> list2 = buyRepository.findByItem_icodeIn(list1);
+            model.addAttribute("list2", list2);
+
             // List<Long> sellerItem = buyRepository.findByItem_icodeIn(itemCode);
             return "/seller/home";
         }

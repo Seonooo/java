@@ -17,4 +17,5 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     BoardListProjection findTop1ByNoLessThanOrderByNoDesc(long no);
 
     BoardListProjection findTop1ByNoGreaterThanOrderByNoAsc(long no);
+
 }

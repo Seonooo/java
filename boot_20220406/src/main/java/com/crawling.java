@@ -1,21 +1,23 @@
 package com;
 
-import java.util.Iterator;
+// import java.util.Iterator;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
+// import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 public class crawling {
     public static void main(String[] args) {
         // String url = "http://www.cgv.co.kr/movies/"; // 크롤링할 사이트 url
         String naverRankUrl = "https://movie.naver.com/movie/running/current.nhn?order=reserve";
+        // String naverRankUrl1 = "https://movie.naver.com/movie/sdb/rank/rmovie.naver";
 
         // doc 에는 html 전체 소스를 지정할 객체를 생성하여 저장하게 함.
         // Document doc = null;
         // Document doc1 = null;
         Document naverDoc = null;
+        // Document naverRankDoc = null;
 
         try {
             // jsoup 방식으로 url에 get형식으로 접속하기
@@ -23,23 +25,36 @@ public class crawling {
             // doc1 = Jsoup.connect(naverRankUrl).get();
             // Iterator<Element> title = doc1.select("dt.tit a").iterator();
             naverDoc = Jsoup.connect(naverRankUrl).get();
+            // naverRankDoc = Jsoup.connect(naverRankUrl1).get();
 
             Elements naverList = naverDoc.select("dt.tit a");
+            // Elements naverRankList = naverRankDoc.select("div.tit3 a");
+
+            // for (int i = 0; i < 10; i++) {
+            // String naverRankHref = naverRankList.get(i).attr("href");
+            // String naverRankCode = naverRankHref.substring(naverRankHref.lastIndexOf("=")
+            // + 1);
+
+            // System.out.println("naverHref : " + naverRankHref + "\n" + "naverCode : " +
+            // naverRankCode);
+
+            // }
 
             for (int i = 0; i < 10; i++) {
                 String naverHref = naverList.get(i).attr("href");
                 String naverCode = naverHref.substring(naverHref.lastIndexOf("=") + 1);
 
                 System.out.println("naverHref : " + naverHref + "naverCode : " + naverCode);
-                String contentUrl = "https://movie.naver.com/movie/bi/mi/basic.naver?code=" + naverCode;
-                Document naverContent = null;
+                // String contentUrl = "https://movie.naver.com/movie/bi/mi/basic.naver?code=" +
+                // naverCode;
+                // Document naverContent = null;
 
-                naverContent = Jsoup.connect(contentUrl).get();
-                Iterator<Element> content = naverContent.select("h5.h_tx_story").iterator();
-                Iterator<Element> content1 = naverContent.select("p.con_tx").iterator();
-                while (content.hasNext()) {
-                    System.out.println(content.next().text() + "\n" + content1.next().text());
-                }
+                // naverContent = Jsoup.connect(contentUrl).get();
+                // Iterator<Element> content = naverContent.select("h5.h_tx_story").iterator();
+                // Iterator<Element> content1 = naverContent.select("p.con_tx").iterator();
+                // while (content.hasNext()) {
+                // System.out.println(content.next().text() + "\n" + content1.next().text());
+                // }
             }
 
             // Elements elements = doc.select("div.sect-movie-chart");

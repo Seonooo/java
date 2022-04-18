@@ -47,7 +47,7 @@ public class Board {
 
     private Long imagesize;
 
-    private Long hit = 1L;
+    private Long hit = 10L;
 
     @DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss.sss")
     @CreationTimestamp

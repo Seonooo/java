@@ -36,15 +36,47 @@ public class BoardController {
     @Autowired
     ResourceLoader resLoader;
 
+    @PostMapping(value = "/delete")
+    public String boardDeletePost(Model model, @RequestParam(name = "bno") Long bno) {
+
+        bRepository.deleteById(bno);
+        model.addAttribute("msg", "삭제가 완료되었습니다.");
+        model.addAttribute("url", "/board/selectlist");
+
+        return "alert";
+    }
+
+    @PostMapping(value = "/update")
+    public String boardUpdatePost(@RequestParam(name = "bno") Long bno, @RequestParam(name = "content") String content,
+            @RequestParam(name = "title") String title) {
+        Board board = bRepository.findById(bno).orElse(null);
+        board.setContent(content);
+        board.setTitle(title);
+        bRepository.save(board);
+
+        return "redirect:/board/selectone?no=" + bno;
+    }
+
+    // 글수정 페이지
+    @GetMapping(value = "/update")
+    public String boardUpdateGet(Model model, @RequestParam(name = "bno") Long bno) {
+        Board board = bRepository.findById(bno).orElse(null);
+        model.addAttribute("board", board);
+        return "/board/update";
+    }
+
+    // 글목록페이지
     @GetMapping(value = "/selectlist")
     public String boardGet(Model model, @RequestParam(name = "txt", defaultValue = "") String txt,
             @RequestParam(name = "page", defaultValue = "1") int page) {
         try {
-            PageRequest pageRequest = PageRequest.of(page - 1, 10);
+            PageRequest pageRequest = PageRequest.of(page - 1, 15);
+            List<Board> list2 = bRepository.findAll();
             List<BoardListProjection> list = bRepository.findByWriterContainingOrderByNoDesc(txt, pageRequest);
             model.addAttribute("list", list);
             // 페이지네이션을 위한 개수 가져오기
-            model.addAttribute("pages", (page - 1) / 10 + 1);
+            model.addAttribute("pages", (list2.size() - 1) / 15 + 1);
+            System.out.println(list2.size());
             return "board/selectlist";
         } catch (Exception e) {
             e.printStackTrace();
@@ -52,11 +84,13 @@ public class BoardController {
         }
     }
 
+    // 글쓰기페이지
     @GetMapping(value = "/insert")
     public String boardInsertGet() {
         return "/board/insert";
     }
 
+    // 글쓰기 실행
     @PostMapping(value = "/insert")
     public String boardInsertPost(Model model, @ModelAttribute Board board,
             @RequestParam(name = "images") MultipartFile file)
@@ -82,6 +116,7 @@ public class BoardController {
 
     }
 
+    // 글내용
     @GetMapping(value = "/selectone")
     public String boardSelectoneGet(HttpServletRequest request, Model model, @RequestParam(name = "no") long no) {
         try {
@@ -89,12 +124,25 @@ public class BoardController {
             board.setImageurl(request.getContextPath() + "/board/image?no=" + no);
             model.addAttribute("board", board);
 
-            BoardListProjection board1 = bRepository.findTop1ByNoLessThanOrderByNoDesc(no);
-            if (board1 != null) {
-                System.out.println(board1.toString());
-                model.addAttribute("prev", board1.getNo());
+            // 이전페이지
+            BoardListProjection boardPrev = bRepository.findTop1ByNoLessThanOrderByNoDesc(no);
+            if (boardPrev != null) {
+                System.out.println(boardPrev.toString());
+                model.addAttribute("prev", boardPrev.getNo());
             } else {
                 model.addAttribute("prev", 0L);
+            }
+
+            // 다음페이지
+            BoardListProjection boardNext = bRepository.findTop1ByNoGreaterThanOrderByNoAsc(no);
+            int max = bRepository.findAll().size();
+            if (boardNext != null) {
+                System.out.println(boardNext);
+                model.addAttribute("next", boardNext.getNo());
+                model.addAttribute("max", max);
+            } else {
+                model.addAttribute("next", board.getNo() + 1L);
+                model.addAttribute("max", max);
             }
 
             return "/board/selectone";
@@ -104,6 +152,7 @@ public class BoardController {
         }
     }
 
+    // 이미지
     @GetMapping(value = "/image")
     public ResponseEntity<byte[]> imageGet(@RequestParam(name = "no") long no) throws IOException {
         Board board = bRepository.findById(no).orElse(null);
