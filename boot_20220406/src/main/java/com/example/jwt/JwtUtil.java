@@ -25,9 +25,9 @@ public class JwtUtil {
         Map<String, Object> map = new HashMap<>();
         String token = Jwts.builder()
                 .setClaims(map)
-                .setSubject(username)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + VALIDATE_TIME))
+                .setSubject(username) // 토큰제목
+                .setIssuedAt(new Date(System.currentTimeMillis())) // 토큰생성일
+                .setExpiration(new Date(System.currentTimeMillis() + VALIDATE_TIME)) // 토큰유효시간
                 .signWith(SignatureAlgorithm.HS256, SECURITY_KEY)
                 .compact();
 

@@ -13,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.example.entity.ProductCountEntity;
 import com.example.entity.ProductEntity;
 
 public class ProductRestControllerTest {
@@ -43,6 +44,38 @@ public class ProductRestControllerTest {
                 HttpMethod.POST, entity, String.class);
 
         assertThat(result.getStatusCode().toString()).isEqualTo("200 OK");
+    }
+
+    // http://127.0.0.1:9090/ROOT/api/productcount/insert.json
+    // @RequestBody
+    @Test
+    public void insertProductCount() {
+        ProductCountEntity productCount = new ProductCountEntity();
+        productCount.setCnt(10L);
+        productCount.setType("I");
+
+        ProductEntity product = new ProductEntity();
+        product.setNo(1002L);
+
+        productCount.setProduct(product);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<ProductCountEntity> entity = new HttpEntity<>(productCount, headers);
+
+        ResponseEntity<String> result = restTemplate.exchange("http://127.0.0.1:9090/ROOT/api/productcount/insert.json",
+                HttpMethod.POST, entity, String.class);
+
+        assertThat(result.getStatusCode().toString()).isEqualTo("200 OK");
+    }
+
+    @Test
+    public void selectCountCount() {
+        String url = "http://127.0.0.1:9090/ROOT/api/productcount/selectcount.json?no=1002";
+        String result = restTemplate.getForObject(url, String.class);
+        System.out.println(result);
+        assertThat(result).contains("\"status\":200");
     }
 
     // http://127.0.0.1:9090/ROOT/api/product/update.json

@@ -15,7 +15,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @ServletComponentScan(basePackages = { "com.example.filter" })
 // 컨트롤러, 환경파일, 서비스
 @ComponentScan(basePackages = { "com.example.controller", "com.example.service",
-		"com.example.config", "com.example.restcontroller", "com.example.jwt" })
+		"com.example.config", "com.example.restcontroller", "com.example.jwt", "com.example.schedule" })
 @MapperScan(basePackages = { "com.example.mapper" })
 @EntityScan(basePackages = { "com.example.entity" })
 // 저장소(jpa) == 매퍼(mybatis)
