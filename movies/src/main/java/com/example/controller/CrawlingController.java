@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 public class CrawlingController {
@@ -32,6 +33,10 @@ public class CrawlingController {
 
                 // 포스터
                 // Elements
+                Element moviePoster = naverDocOne.select("div.poster img").last();
+                String moviePosterUrl = moviePoster.absUrl("src");
+                System.out.println(moviePosterUrl);
+
 
                 // 영화제목
                 Elements movieTitle = naverDocOne.select("h3.h_movie a");
