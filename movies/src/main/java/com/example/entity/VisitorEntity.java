@@ -28,7 +28,8 @@ public class VisitorEntity {
     @Column(length = 100)
     private String vPw;
     // 비회원예매
-    @JsonBackReference
-    @OneToMany(mappedBy = "visitorEntity")
-    private List<VisitorTicketEntity> visitorTicketEntityList = new ArrayList<>();
+    // @JsonBackReference
+    // @OneToMany(mappedBy = "visitorEntity")
+    // private List<VisitorTicketEntity> visitorTicketEntityList = new
+    // ArrayList<>();
 }

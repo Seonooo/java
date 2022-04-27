@@ -50,5 +50,4 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             response.sendError(-1, "토큰오류");
         }
     }
-
 }

@@ -8,7 +8,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -43,12 +42,6 @@ public class MovieEntity {
     private String mTime;
     // 순위
     private Long mRank;
-    // 짧은 줄거리
-    @Lob
-    private String mShot;
-    // 긴 줄거리
-    @Lob
-    private String mLong;
     // 등록일
     @DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss.sss")
     @CreationTimestamp // CURRENT_DATE
@@ -58,7 +51,7 @@ public class MovieEntity {
     // 감독
     private Long mDirector;
     // 영화좋아요수
-    private Long mLike = 0L;
+    private Long mLike;
     // 국가
     @ManyToOne
     @JoinColumn(name = "n_code")
@@ -75,24 +68,29 @@ public class MovieEntity {
     @ManyToOne
     @JoinColumn(name = "g_code")
     private GpaEntity gpaEntity;
+    // 줄거리
+    @ManyToOne
+    @JoinColumn(name = "ct_code")
+    private ContentEntity contentEntity;
     // 포스터
-    @JsonBackReference
-    @OneToMany(mappedBy = "movieEntity")
-    private List<PosterEntity> posterEntityList = new ArrayList<>();
-    // 회원예매
-    @JsonBackReference
-    @OneToMany(mappedBy = "movieEntity")
-    private List<TicketEntity> ticketEntityList = new ArrayList<>();
-    // 스케줄
-    @JsonBackReference
-    @OneToMany(mappedBy = "movieEntity")
-    private List<ScheduleEntity> scheduleEntityList = new ArrayList<>();
-    // 비회원예매
-    @JsonBackReference
-    @OneToMany(mappedBy = "movieEntity")
-    private List<VisitorTicketEntity> visitorTicketEntityList = new ArrayList<>();
-    // 알람
-    @JsonBackReference
-    @OneToMany(mappedBy = "movieEntity")
-    private List<AlramEntity> alramEntityList = new ArrayList<>();
+    // @JsonBackReference
+    // @OneToMany(mappedBy = "movieEntity")
+    // private List<PosterEntity> posterEntityList = new ArrayList<>();
+    // // 회원예매
+    // @JsonBackReference
+    // @OneToMany(mappedBy = "movieEntity")
+    // private List<TicketEntity> ticketEntityList = new ArrayList<>();
+    // // 스케줄
+    // @JsonBackReference
+    // @OneToMany(mappedBy = "movieEntity")
+    // private List<ScheduleEntity> scheduleEntityList = new ArrayList<>();
+    // // 비회원예매
+    // @JsonBackReference
+    // @OneToMany(mappedBy = "movieEntity")
+    // private List<VisitorTicketEntity> visitorTicketEntityList = new
+    // ArrayList<>();
+    // // 알람
+    // @JsonBackReference
+    // @OneToMany(mappedBy = "movieEntity")
+    // private List<AlramEntity> alramEntityList = new ArrayList<>();
 }

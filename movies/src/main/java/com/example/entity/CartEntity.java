@@ -44,8 +44,8 @@ public class CartEntity {
     @ManyToOne
     @JoinColumn(name = "m_id")
     private MemberEntity memberEntity;
-    // 구매
-    @JsonBackReference
-    @OneToMany(mappedBy = "cartEntity")
-    private List<BuyEntity> buyEntityList = new ArrayList<>();
+    // // 구매
+    // @JsonBackReference
+    // @OneToMany(mappedBy = "cartEntity")
+    // private List<BuyEntity> buyEntityList = new ArrayList<>();
 }

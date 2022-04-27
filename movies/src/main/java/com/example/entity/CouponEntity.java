@@ -54,7 +54,7 @@ public class CouponEntity {
     @JoinColumn(name = "e_code")
     private EventEntity eventEntity;
     // 회원 보유 쿠폰
-    @JsonBackReference
-    @OneToMany(mappedBy = "couponEntity")
-    private List<MemberCouponEntity> memberCouponEntityList = new ArrayList<>();
+    // @JsonBackReference
+    // @OneToMany(mappedBy = "couponEntity")
+    // private List<MemberCouponEntity> memberCouponEntityList = new ArrayList<>();
 }

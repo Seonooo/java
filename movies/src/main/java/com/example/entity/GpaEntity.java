@@ -34,7 +34,7 @@ public class GpaEntity {
     @JoinColumn(name = "r_code")
     private ReviewEntity reviewEntity;
     // 영화 테이블
-    @JsonBackReference
-    @OneToMany(mappedBy = "gpaEntity")
-    private List<MovieEntity> movieEntityList = new ArrayList<>();
+    // @JsonBackReference
+    // @OneToMany(mappedBy = "gpaEntity")
+    // private List<MovieEntity> movieEntityList = new ArrayList<>();
 }

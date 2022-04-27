@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
+    <script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <h3>로그인</h3>
+    <form th:action="@{/member/loginaction}" method="post">
+        <label style="display: inline-block; width: 80px;">이메일</label>
+        <input type="text" name="mId">
+        <br />
+        <label style="display: inline-block; width: 80px;">암호</label>
+        <input type="password" name="mPw">
+        <br />
+        <input type="submit" value="로그인">
+    </form>
+</body>
+
+</html>

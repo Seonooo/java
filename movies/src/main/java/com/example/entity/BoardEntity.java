@@ -52,12 +52,12 @@ public class BoardEntity {
     @ManyToOne
     @JoinColumn(name = "m_id")
     private MemberEntity memberEntity;
-    // 게시판 이미지
-    @JsonBackReference
-    @OneToMany(mappedBy = "boardEntity")
-    private List<BoardimgEntity> boardimgEntityList = new ArrayList<>();
-    // 댓글
-    @JsonBackReference
-    @OneToMany(mappedBy = "boardEntity")
-    private List<CommentEntity> commentEntityList = new ArrayList<>();
+    // // 게시판 이미지
+    // @JsonBackReference
+    // @OneToMany(mappedBy = "boardEntity")
+    // private List<BoardimgEntity> boardimgEntityList = new ArrayList<>();
+    // // 댓글
+    // @JsonBackReference
+    // @OneToMany(mappedBy = "boardEntity")
+    // private List<CommentEntity> commentEntityList = new ArrayList<>();
 }

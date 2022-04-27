@@ -19,10 +19,11 @@ import okhttp3.Response;
 @Controller
 @RequestMapping(value = "/nation")
 public class NationController {
-
+    // 저장소
     @Autowired
     NationRepository nRepository;
 
+    // 국가입력
     @GetMapping(value = { "/insertnation" })
     public String insertnationGET() throws IOException {
         final String URL = "https://mu-star.net/upload/20200511/country.json";
@@ -57,6 +58,7 @@ public class NationController {
         return "redirect:/nation/insert";
     }
 
+    // 국가입력 페이지
     @GetMapping(value = { "/insert" })
     public String insertGET() {
 

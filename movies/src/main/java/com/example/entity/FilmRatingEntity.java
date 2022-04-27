@@ -24,7 +24,7 @@ public class FilmRatingEntity {
     @Column(length = 50)
     private String fFilmrating;
     // 영화 테이블
-    @JsonBackReference
-    @OneToMany(mappedBy = "filmratingEntity")
-    private List<MovieEntity> movieEntityList = new ArrayList<>();
+    // @JsonBackReference
+    // @OneToMany(mappedBy = "filmratingEntity")
+    // private List<MovieEntity> movieEntityList = new ArrayList<>();
 }

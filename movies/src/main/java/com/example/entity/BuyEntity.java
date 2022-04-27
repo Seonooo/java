@@ -43,8 +43,8 @@ public class BuyEntity {
     @ManyToOne
     @JoinColumn(name = "ca_no")
     private CartEntity cartEntity;
-    // 구매내역
-    @JsonBackReference
-    @OneToMany(mappedBy = "buyEntity")
-    private List<BuyRecordEntity> buyRecordEntityList = new ArrayList<>();
+    // // 구매내역
+    // @JsonBackReference
+    // @OneToMany(mappedBy = "buyEntity")
+    // private List<BuyRecordEntity> buyRecordEntityList = new ArrayList<>();
 }

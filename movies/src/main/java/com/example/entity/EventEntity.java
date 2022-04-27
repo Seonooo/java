@@ -48,7 +48,7 @@ public class EventEntity {
     @CreationTimestamp // CURRENT_DATE
     private Date eRegdate;
     // 쿠폰
-    @JsonBackReference
-    @OneToMany(mappedBy = "eventEntity")
-    private List<CouponEntity> couponEntityList = new ArrayList<>();
+    // @JsonBackReference
+    // @OneToMany(mappedBy = "eventEntity")
+    // private List<CouponEntity> couponEntityList = new ArrayList<>();
 }

@@ -23,8 +23,8 @@ public class BuyStateEntity {
     // 구매단계
     @Column(length = 30)
     private String bsState;
-    // 구매
-    @JsonBackReference
-    @OneToMany(mappedBy = "buyStateEntity")
-    private List<BuyEntity> buyEntityList = new ArrayList<>();
+    // // 구매
+    // @JsonBackReference
+    // @OneToMany(mappedBy = "buyStateEntity")
+    // private List<BuyEntity> buyEntityList = new ArrayList<>();
 }

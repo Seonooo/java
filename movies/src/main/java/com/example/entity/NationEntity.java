@@ -23,8 +23,8 @@ public class NationEntity {
     // 국가
     @Column(length = 50)
     private String nNation;
-    // 영화 테이블
-    @JsonBackReference
-    @OneToMany(mappedBy = "nationEntity")
-    private List<MovieEntity> movieEntityList = new ArrayList<>();
+    // // 영화 테이블
+    // @JsonBackReference
+    // @OneToMany(mappedBy = "nationEntity")
+    // private List<MovieEntity> movieEntityList = new ArrayList<>();
 }

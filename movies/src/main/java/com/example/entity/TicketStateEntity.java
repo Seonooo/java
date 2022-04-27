@@ -17,18 +17,19 @@ import lombok.Data;
 @Entity
 @Table(name = "TICKET_STATE")
 public class TicketStateEntity {
-    // 예매상태코드
-    @Id
-    private Long tsCode;
     // 예매상태
     @Column(length = 10)
     private String tsState;
+    // 예매상태코드
+    @Id
+    private Long tsCode;
     // 회원예매
     @JsonBackReference
     @OneToMany(mappedBy = "ticketStateEntity")
     private List<TicketEntity> ticketEntityList = new ArrayList<>();
-    // 비회원예매
-    @JsonBackReference
-    @OneToMany(mappedBy = "ticketStateEntity")
-    private List<VisitorTicketEntity> visitorTicketEntityList = new ArrayList<>();
+    // // 비회원예매
+    // @JsonBackReference
+    // @OneToMany(mappedBy = "ticketStateEntity")
+    // private List<VisitorTicketEntity> visitorTicketEntityList = new
+    // ArrayList<>();
 }

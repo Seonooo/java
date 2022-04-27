@@ -24,7 +24,7 @@ public class StoreStateEntity {
     @Column(length = 50)
     private String sstState;
     // 스토어
-    @JsonBackReference
-    @OneToMany(mappedBy = "storeStateEntity")
-    private List<StoreEntity> storeEntityList = new ArrayList<>();
+    // @JsonBackReference
+    // @OneToMany(mappedBy = "storeStateEntity")
+    // private List<StoreEntity> storeEntityList = new ArrayList<>();
 }

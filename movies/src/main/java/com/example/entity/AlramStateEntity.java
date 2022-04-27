@@ -24,7 +24,7 @@ public class AlramStateEntity {
     @Column(length = 20)
     private String asState;
     // 알람
-    @JsonBackReference
-    @OneToMany(mappedBy = "alramStateEntity")
-    private List<AlramEntity> alramEntityList = new ArrayList<>();
+    // @JsonBackReference
+    // @OneToMany(mappedBy = "alramStateEntity")
+    // private List<AlramEntity> alramEntityList = new ArrayList<>();
 }

@@ -51,11 +51,11 @@ public class TicketEntity {
     @JoinColumn(name = "ts_code")
     private TicketStateEntity ticketStateEntity;
     // 예매기록
-    @JsonBackReference
-    @OneToMany(mappedBy = "ticketEntity")
-    private List<RecordEntity> recordEntityList = new ArrayList<>();
-    // 짧은 리뷰
-    @JsonBackReference
-    @OneToMany(mappedBy = "ticketEntity")
-    private List<ReviewEntity> reviewEntityList = new ArrayList<>();
+    // @JsonBackReference
+    // @OneToMany(mappedBy = "ticketEntity")
+    // private List<RecordEntity> recordEntityList = new ArrayList<>();
+    // // 짧은 리뷰
+    // @JsonBackReference
+    // @OneToMany(mappedBy = "ticketEntity")
+    // private List<ReviewEntity> reviewEntityList = new ArrayList<>();
 }

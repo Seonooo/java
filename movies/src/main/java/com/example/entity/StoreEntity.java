@@ -54,7 +54,7 @@ public class StoreEntity {
     @JoinColumn(name = "sst_code")
     private StoreStateEntity storeStateEntity;
     // 장바구니
-    @JsonBackReference
-    @OneToMany(mappedBy = "storeEntity")
-    private List<CartEntity> cartEntityList = new ArrayList<>();
+    // @JsonBackReference
+    // @OneToMany(mappedBy = "storeEntity")
+    // private List<CartEntity> cartEntityList = new ArrayList<>();
 }

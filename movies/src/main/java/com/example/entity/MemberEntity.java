@@ -1,6 +1,6 @@
 package com.example.entity;
 
-import java.util.ArrayList;
+// import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -10,10 +10,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+// import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+// import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -70,36 +71,43 @@ public class MemberEntity {
     @DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss.sss")
     @CreationTimestamp // CURRENT_DATE
     private Date mRegdate;
-    // 장르
-    @ManyToOne
-    @JoinColumn(name = "c_code")
-    private CategoryEntity categoryEntity;
     // 회원등급
     @ManyToOne
     @JoinColumn(name = "ms_code")
     private MembershipEntity membershipEntity;
-    // 회원포인트
-    @ManyToOne
-    @JoinColumn(name = "mp_code")
-    private MemberpointEntity memberpointEntity;
     // 게시판
-    @JsonBackReference
-    @OneToMany(mappedBy = "memberEntity")
-    private List<BoardEntity> boardEntityList = new ArrayList<>();
+    // @JsonBackReference
+    // @OneToMany(mappedBy = "memberEntity")
+    // private List<BoardEntity> boardEntityList = new ArrayList<>();
     // 회원예매
-    @JsonBackReference
-    @OneToMany(mappedBy = "memberEntity")
-    private List<TicketEntity> ticketEntityList = new ArrayList<>();
+    // @JsonBackReference
+    // @OneToMany(mappedBy = "memberEntity")
+    // private List<TicketEntity> ticketEntityList = new ArrayList<>();
     // 알람
-    @JsonBackReference
-    @OneToMany(mappedBy = "memberEntity")
-    private List<AlramEntity> alramEntityList = new ArrayList<>();
+    // @JsonBackReference
+    // @OneToMany(mappedBy = "memberEntity")
+    // private List<AlramEntity> alramEntityList = new ArrayList<>();
     // 회원 보유 쿠폰
-    @JsonBackReference
-    @OneToMany(mappedBy = "memberEntity")
-    private List<MemberCouponEntity> memberCouponEntityList = new ArrayList<>();
+    // @JsonBackReference
+    // @OneToMany(mappedBy = "memberEntity")
+    // private List<MemberCouponEntity> memberCouponEntityList = new ArrayList<>();
     // 장바구니
-    @JsonBackReference
-    @OneToMany(mappedBy = "memberEntity")
-    private List<CartEntity> cartEntityList = new ArrayList<>();
+    // @JsonBackReference
+    // @OneToMany(mappedBy = "memberEntity")
+    // private List<CartEntity> cartEntityList = new ArrayList<>();
+
+    // 테이블에 생성되지 않음, 매핑도 안됨, 임시
+    // 년
+    @Transient
+    private String year;
+    // 월
+    @Transient
+    private String month;
+    // 일
+    @Transient
+    private String day;
+
+    // 장르코드
+    @Transient
+    private List<Long> categoryCode;
 }
