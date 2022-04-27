@@ -125,7 +125,6 @@ public class CustomerRestController {
         int ret = mMapper.memberJoin(member);
         Map<String, Object> map = new HashMap<>();
         map.put("status", 0);
-
         if (ret == 1) {
             map.put("status", 200);
         }

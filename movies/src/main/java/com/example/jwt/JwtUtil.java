@@ -13,7 +13,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 // 토큰을 발행 및 정보추출용
 @Service
-public class jwtUtil {
+public class JwtUtil {
 
     private final String SECURITY_KEY = "fagjdgskdlghs#123645";
 
