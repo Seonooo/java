@@ -1,6 +1,5 @@
 package com.example.restcontroller;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -137,9 +136,9 @@ public class MemberRestController {
         try {
             // 토큰으로 아이디 찾기
             String mId = jwt.extractUsername(token);
-            System.out.println(mId);
+            System.out.println("memberId ===> " + mId);
             // 토큰에서 추출한 아이디로 member찾기
-            MemberEntity member = mRepository.findById(mId).orElse(null);
+            MemberEntity member = mService.getMember(mId);
             // member에 member전송하기
             map.put("status", 200);
             map.put("member", member);
@@ -246,19 +245,17 @@ public class MemberRestController {
         try {
             // 토큰으로 아이디받음
             String mId = jwt.extractUsername(token);
+            member.setMId(mId);
             // 토큰에서 받은 아이디로 user정보 받음
             UserDetails user = userDetailsService.loadUserByUsername(mId);
             BCryptPasswordEncoder bcpe = new BCryptPasswordEncoder();
 
             if (bcpe.matches(member.getMPw(), user.getPassword())) {
                 // newMember에 업데이트할 정보를 가져옴
-                MemberEntity newMember = mRepository.findById(user.getUsername()).orElse(null);
-                newMember.setMPw(bcpe.encode(member.getMPw1()));
-                newMember.setMAddr(member.getMAddr());
-                newMember.setMEmail(member.getMEmail());
-                newMember.setMPhone(member.getMPhone());
-                mRepository.save(newMember);
-                map.put("status", 200);
+                int ret = mService.updateMember(member);
+                if (ret == 1) {
+                    map.put("status", 200);
+                }
             }
 
         } catch (Exception e) {
@@ -277,31 +274,15 @@ public class MemberRestController {
         Map<String, Object> map = new HashMap<>();
         map.put("status", 0);
         try {
-            // 토큰으로 아이디받음
             String mId = jwt.extractUsername(token);
-            // 토큰에서 받은 아이디로 user정보 받음
             UserDetails user = userDetailsService.loadUserByUsername(mId);
             BCryptPasswordEncoder bcpe = new BCryptPasswordEncoder();
 
             if (bcpe.matches(oldmember.getMPw(), user.getPassword())) {
-                MemberEntity member = mRepository.findById(user.getUsername()).orElse(null);
-                System.out.println("oldmember =>" + member);
-                member.setMPw(null);
-                member.setMName(null);
-                member.setMEmail(null);
-                member.setMPhone(null);
-                member.setMRole(null);
-                member.setMAddr(null);
-                member.setMBirth(new Date());
-                member.setMGender(null);
-                member.setMProfile(null);
-                member.setMProfiletype(null);
-                member.setMProfilesize(null);
-                member.setMProfilename(null);
-                member.setMembershipEntity(null);
-                System.out.println("newmember =>" + member);
-                mRepository.save(member);
-                // System.out.println(oldmember);
+                int ret = mService.deleteMember(user.getUsername());
+                if (ret == 1) {
+                    map.put("status", 200);
+                }
             }
 
             map.put("status", 200);

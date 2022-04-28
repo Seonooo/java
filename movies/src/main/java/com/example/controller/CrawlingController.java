@@ -7,22 +7,17 @@ import java.util.List;
 import java.util.Locale;
 
 import com.example.entity.MovieEntity;
-import com.example.repository.MovieRepository;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping(value = "/crawling")
 public class CrawlingController {
-
-    @Autowired
-    MovieRepository mRepository;
 
     public static void main(String[] args) {
         // 크롤링할 사이트 url주소
