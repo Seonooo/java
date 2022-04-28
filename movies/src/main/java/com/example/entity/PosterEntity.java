@@ -29,7 +29,7 @@ public class PosterEntity {
     private Long pCode;
     // 이미지
     @Lob
-    private String pImage;
+    private byte[] pImage;
     // 이미지타입
     @Column(length = 50)
     private String pImagetype;
@@ -40,6 +40,8 @@ public class PosterEntity {
     private String pImagename;
     // 대표이미지
     private Long pHead;
+    // 이미지 url
+    private String pImageUrl;
     // 등록일
     @DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss.sss")
     @CreationTimestamp // CURRENT_DATE

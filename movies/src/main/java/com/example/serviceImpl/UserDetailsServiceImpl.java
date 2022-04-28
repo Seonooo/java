@@ -26,7 +26,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         System.out.println("UserDetails" + mId);
 
         // id통해서 유저 객체 가져오기
-        MemberEntity member = mRepository.findBymId(mId);
+        MemberEntity member = mRepository.findById(mId).orElse(null);
 
         String[] strRole = { member.getMRole() };
 

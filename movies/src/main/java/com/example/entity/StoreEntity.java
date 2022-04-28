@@ -39,6 +39,17 @@ public class StoreEntity {
     // 상품설명
     @Lob
     private String stContent;
+    // 이미지
+    @Lob
+    private byte[] stImage;
+    // 이미지타입
+    @Column(length = 50)
+    private String stImagetype;
+    // 이미지크기
+    private Long stImagesize;
+    // 이미지이름
+    @Column(length = 100)
+    private String stImagename;
     // 상품등록일
     @DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss.sss")
     @CreationTimestamp // CURRENT_DATE

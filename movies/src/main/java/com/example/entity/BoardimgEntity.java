@@ -29,7 +29,7 @@ public class BoardimgEntity {
     private Long biNo;
     // 이미지
     @Lob
-    private String biImage;
+    private byte[] biImage;
     // 이미지타입
     @Column(length = 50)
     private String biImagetype;

@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -31,7 +32,7 @@ public class MovieEntity {
     @DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss.sss")
     private Date mDeadline;
     // 평점
-    private Long mGpa;
+    private Float mGpa;
     // 상영시간
     @Column(length = 10)
     private String mTime;
@@ -42,9 +43,9 @@ public class MovieEntity {
     @CreationTimestamp // CURRENT_DATE
     private Date mRegdate;
     // 배우
-    private Long mActor;
+    private String mActor;
     // 감독
-    private Long mDirector;
+    private String mDirector;
     // 영화좋아요수
     private Long mLike;
     // 국가
@@ -63,10 +64,12 @@ public class MovieEntity {
     @ManyToOne
     @JoinColumn(name = "g_code")
     private GpaEntity gpaEntity;
-    // 줄거리
-    @ManyToOne
-    @JoinColumn(name = "ct_code")
-    private ContentEntity contentEntity;
+    // 짧은줄거리
+    @Lob
+    private String mShot;
+    // 긴줄거리
+    @Lob
+    private String mLong;
     // 포스터
     // @JsonBackReference
     // @OneToMany(mappedBy = "movieEntity")

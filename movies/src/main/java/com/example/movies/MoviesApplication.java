@@ -17,6 +17,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 		"com.example.controller",
 		"com.example.restcontroller",
 		"com.example.service",
+		"com.example.serviceImpl",
 		"com.example.jwt",
 })
 // 저장소(jpa) == 매퍼(mybatis)

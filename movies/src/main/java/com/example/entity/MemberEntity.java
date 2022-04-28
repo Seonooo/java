@@ -58,7 +58,7 @@ public class MemberEntity {
     private String mGender;
     // 이미지(프로필)
     @Lob
-    private String mProfile;
+    private byte[] mProfile;
     // 이미지타입
     @Column(length = 50)
     private String mProfiletype;

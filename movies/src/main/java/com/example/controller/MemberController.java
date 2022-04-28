@@ -64,7 +64,14 @@ public class MemberController {
         return "/member/login";
     }
 
-    // 로그인 홈
+    // 마이페이지
+    @GetMapping(value = { "/mypage" })
+    public String mypageGET() {
+
+        return "/member/mypage";
+    }
+
+    // 로그아웃
     @GetMapping(value = { "/logout" })
     public String logoutGET() {
 

@@ -13,7 +13,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 // 토큰을 발행 및 정보추출용
 @Service
-public class JwtUtil {
+public class jwtUtil {
 
     private final String SECURITY_KEY = "fagjdgskdlghs#123645";
 
@@ -34,19 +34,19 @@ public class JwtUtil {
         return token;
     }
 
-    // // 토큰생성(권한 정보)
-    // public String generatorRoleToken(String role) {
-    // Map<String, Object> map = new HashMap<>();
-    // String token = Jwts.builder()
-    // .setClaims(map)
-    // .setSubject(role)
-    // .setIssuedAt(new Date(System.currentTimeMillis()))
-    // .setExpiration(new Date(System.currentTimeMillis() + VALIDATE_TIME))
-    // .signWith(SignatureAlgorithm.HS256, SECURITY_KEY)
-    // .compact();
+    // 토큰생성(권한 정보)
+    public String generatorRoleToken(String role) {
+        Map<String, Object> map = new HashMap<>();
+        String token = Jwts.builder()
+                .setClaims(map)
+                .setSubject(role)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + VALIDATE_TIME))
+                .signWith(SignatureAlgorithm.HS256, SECURITY_KEY)
+                .compact();
 
-    // return token;
-    // }
+        return token;
+    }
 
     // 정보추출용 메소드
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {

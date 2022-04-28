@@ -22,7 +22,7 @@ public class GpaEntity {
     @GeneratedValue(generator = "SEQ_GPA", strategy = GenerationType.SEQUENCE)
     private Long gCode;
     // 평균평점
-    private Long gGpa;
+    private Float gGpa;
     // 짧은 리뷰
     @ManyToOne
     @JoinColumn(name = "r_code")
