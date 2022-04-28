@@ -106,6 +106,9 @@ public class MemberEntity {
     // 일
     @Transient
     private String day;
+    // 변경암호
+    @Transient
+    private String mPw1;
 
     // 장르코드
     @Transient
