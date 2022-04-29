@@ -45,6 +45,7 @@ public class MovieEntity {
     // 배우
     private String mActor;
     // 감독
+    @Column(length = 250)
     private String mDirector;
     // 영화좋아요수
     private Long mLike;
@@ -52,10 +53,6 @@ public class MovieEntity {
     @ManyToOne
     @JoinColumn(name = "n_code")
     private NationEntity nationEntity;
-    // 장르
-    @ManyToOne
-    @JoinColumn(name = "c_code")
-    private CategoryEntity categoryEntity;
     // 등급
     @ManyToOne
     @JoinColumn(name = "f_code")
@@ -70,6 +67,10 @@ public class MovieEntity {
     // 긴줄거리
     @Lob
     private String mLong;
+    // 영화개봉상태
+    @ManyToOne
+    @JoinColumn(name = "ms_code")
+    private MovieStateEntity movieStateEntity;
     // 포스터
     // @JsonBackReference
     // @OneToMany(mappedBy = "movieEntity")

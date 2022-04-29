@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
+    <script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div style="padding: 20px;">
+        <h3>영화등록</h3>
+        <hr />
+
+        <a th:href="@{/crawling/insert}">영화등록</a>
+        <form th:action="@{/crawling/insert}" method="post">
+            <input type="submit" value="영화등록">
+        </form>
+        <form th:action="@{/crawling/delete}" method="post">
+            <input type="submit" value="영화삭제">
+        </form>
+    </div>
+
+</body>
+
+
+</html>

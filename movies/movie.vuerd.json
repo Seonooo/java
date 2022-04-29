@@ -3,9 +3,9 @@
     "version": "2.2.11",
     "width": 2000,
     "height": 2000,
-    "scrollTop": -522,
-    "scrollLeft": -142,
-    "zoomLevel": 0.7,
+    "scrollTop": -514.1666462355192,
+    "scrollLeft": -445.8333156175092,
+    "zoomLevel": 0.4,
     "show": {
       "tableComment": true,
       "columnComment": true,
@@ -19,7 +19,7 @@
     },
     "database": "Oracle",
     "databaseName": "",
-    "canvasType": "@vuerd/builtin-generator-code",
+    "canvasType": "ERD",
     "language": "JPA",
     "tableCase": "pascalCase",
     "columnCase": "camelCase",
@@ -419,7 +419,7 @@
           "active": false,
           "left": 34.0049,
           "top": 50.1826,
-          "zIndex": 30,
+          "zIndex": 37,
           "widthName": 60,
           "widthComment": 71.5703125,
           "color": "#FF0000"
@@ -482,7 +482,7 @@
           "active": false,
           "left": 583.9716,
           "top": 311.9336,
-          "zIndex": 52,
+          "zIndex": 34,
           "widthName": 65.62255859375,
           "widthComment": 60,
           "color": "#FFFFFF"
@@ -809,7 +809,7 @@
           "active": false,
           "left": 14.5834,
           "top": 860.8447,
-          "zIndex": 31,
+          "zIndex": 30,
           "widthName": 60,
           "widthComment": 60,
           "color": "#FF000A"
@@ -1194,7 +1194,7 @@
           "active": false,
           "left": 1450.4917,
           "top": 578.707,
-          "zIndex": 54,
+          "zIndex": 35,
           "widthName": 60,
           "widthComment": 60,
           "color": "#4CAF50"
@@ -2652,7 +2652,7 @@
           "active": false,
           "left": 23.5556,
           "top": 1600.3889,
-          "zIndex": 33,
+          "zIndex": 32,
           "widthName": 60,
           "widthComment": 60,
           "color": "#FF5722"
@@ -4342,7 +4342,7 @@
           "active": false,
           "left": 1003,
           "top": 337,
-          "zIndex": 34,
+          "zIndex": 33,
           "widthName": 92.669921875,
           "widthComment": 67,
           "color": "#4CAF50"
@@ -4428,7 +4428,7 @@
           "active": false,
           "left": 398.5833,
           "top": 512.2219,
-          "zIndex": 58,
+          "zIndex": 36,
           "widthName": 118.2255859375,
           "widthComment": 80,
           "color": "#FFAFAF"
@@ -4447,7 +4447,7 @@
           "active": false,
           "left": 510.2500498195464,
           "top": 986.9047588417475,
-          "zIndex": 32,
+          "zIndex": 31,
           "width": 217.66666660043938,
           "height": 391.6666664017572,
           "color": "rgb(255,255,255)"
