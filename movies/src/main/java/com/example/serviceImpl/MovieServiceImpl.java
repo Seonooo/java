@@ -3,21 +3,22 @@ package com.example.serviceImpl;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 
 import com.example.entity.CategoryEntity;
 import com.example.entity.FilmRatingEntity;
 import com.example.entity.MovieCategoryEntity;
 import com.example.entity.MovieEntity;
+import com.example.entity.MovieStateEntity;
 import com.example.entity.NationEntity;
 import com.example.entity.PosterEntity;
 import com.example.repository.CategoryRepository;
 import com.example.repository.FilmRatingRepository;
+import com.example.repository.GpaRepository;
 import com.example.repository.MovieCategoryRepository;
 import com.example.repository.MovieRepository;
+import com.example.repository.MovieStateRepository;
 import com.example.repository.NationRepository;
 import com.example.repository.PosterRepository;
 import com.example.service.MovieService;
@@ -27,29 +28,44 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.util.DateUtils;
 
 @Service
 public class MovieServiceImpl implements MovieService {
 
+    // 영화
     @Autowired
     MovieRepository movieRepository;
 
+    // 포스터
     @Autowired
     PosterRepository posterRepository;
 
+    // 관람등급
     @Autowired
     FilmRatingRepository filmRatingRepository;
 
+    // 국가
     @Autowired
     NationRepository nationRepository;
 
+    // 장르
     @Autowired
     CategoryRepository categoryRepository;
 
+    // 영화 - 장르
     @Autowired
     MovieCategoryRepository movieCategoryRepository;
+
+    // 관람객 평점
+    @Autowired
+    GpaRepository gpaRepository;
+
+    // 영화 - 상태
+    @Autowired
+    MovieStateRepository movieStateRepository;
 
     // 크롤링으로 전체추가
     @Override
@@ -237,7 +253,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public int insertMovie(MovieEntity movie) {
+    public int insertMovie(MovieEntity movie, String nation, Long filmRating, Long gpa, Long mscode) {
         try {
             MovieEntity movieEntity = new MovieEntity();
             movieEntity.setMCode(movie.getMCode());
@@ -250,13 +266,20 @@ public class MovieServiceImpl implements MovieService {
             movieEntity.setMShot(movie.getMShot());
             movieEntity.setMLong(movie.getMLong());
             movieEntity.setMRelease(movie.getMRelease());
-            movieEntity.setMDeadline(movie.getMDeadline());
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(movie.getMRelease());
+
+            // 마감일 : 개봉일 +2달
+            cal.add(Calendar.MONTH, 2);
+            movieEntity.setMDeadline(cal.getTime());
+
             movieEntity.setMRank(movie.getMRank());
 
-            movieEntity.setNationEntity(movie.getNationEntity());
-            movieEntity.setFilmratingEntity(movie.getFilmratingEntity());
-            movieEntity.setGpaEntity(movie.getGpaEntity());
-
+            movieEntity.setMovieStateEntity(movieStateRepository.findById(mscode).orElse(null));
+            movieEntity.setNationEntity(nationRepository.findById(nation).orElse(null));
+            movieEntity.setFilmratingEntity(filmRatingRepository.findById(filmRating).orElse(null));
+            movieEntity.setGpaEntity(gpaRepository.findById(gpa).orElse(null));
+            movieRepository.save(movieEntity);
             return 1;
         } catch (Exception e) {
             e.printStackTrace();
@@ -265,10 +288,10 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public int updateMovie(MovieEntity movie) {
+    public int updateHit(Long code) {
         try {
-            MovieEntity movieEntity = movieRepository.findById(movie.getMCode());
-            movieEntity.setMLike(movie.getMLike() + 1);
+            MovieEntity movieEntity = movieRepository.findById(code).orElse(null);
+            movieEntity.setMLike(movieEntity.getMLike() + 1);
             movieRepository.save(movieEntity);
             return 1;
         } catch (Exception e) {
@@ -287,6 +310,86 @@ public class MovieServiceImpl implements MovieService {
         } catch (Exception e) {
             e.printStackTrace();
             return 0;
+        }
+    }
+
+    @Override
+    public int updateMovie(MovieEntity movie, Long mscode) {
+        try {
+            MovieEntity movieEntity = movieRepository.findById(movie.getMCode()).orElse(null);
+            movieEntity.setMDeadline(movie.getMDeadline());
+            MovieStateEntity movieStateEntity = movieStateRepository.findById(mscode).orElse(null);
+            movieEntity.setMovieStateEntity(movieStateEntity);
+            movieRepository.save(movieEntity);
+            return 1;
+        } catch (Exception e) {
+            return 0;
+        }
+
+    }
+
+    @Override
+    public int deleteMovie(Long code) {
+        try {
+            movieRepository.deleteById(code);
+            return 1;
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
+    @Override
+    public MovieEntity selectMovie(Long code) {
+        try {
+            return movieRepository.findById(code).orElse(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public List<MovieEntity> selectMovies(Integer page, Integer size) {
+        try {
+            // mRank를 기준으로 오름차순
+            PageRequest pageRequest = PageRequest.of(page, size, Sort.by("mRank").ascending());
+            return movieRepository.findAll(pageRequest).getContent();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public List<MovieEntity> selectMovieGenre(Integer page, Integer size, Long gcode) {
+        try {
+            PageRequest pageRequest = PageRequest.of(page, size, Sort.by("mRank").ascending());
+            MovieCategoryEntity mCategoryEntity = movieCategoryRepository.findById(gcode).orElse(null);
+            Long mCode = mCategoryEntity.getMovieEntity().getMCode();
+
+            return movieRepository.findAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public List<MovieEntity> selectMovieState(Integer page, Integer size, Long mscode) {
+        try {
+            return movieRepository.findAll();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    @Override
+    public List<MovieEntity> selectMovieAllList() {
+        try {
+            return movieRepository.findAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 

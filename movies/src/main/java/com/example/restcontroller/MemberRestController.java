@@ -47,6 +47,7 @@ public class MemberRestController {
     UserDetailsServiceImpl userDetailsService;
 
     // 회원가입
+    // http://127.0.0.1:9090/ROOT/api/member/join
     @RequestMapping(value = "/join", method = { RequestMethod.POST }, consumes = { MediaType.ALL_VALUE }, produces = {
             MediaType.APPLICATION_JSON_VALUE })
     public Map<String, Object> joinPost(
@@ -278,8 +279,10 @@ public class MemberRestController {
             UserDetails user = userDetailsService.loadUserByUsername(mId);
             BCryptPasswordEncoder bcpe = new BCryptPasswordEncoder();
 
+            // 예전암호와 입력암호 일치확인 후 변경
             if (bcpe.matches(oldmember.getMPw(), user.getPassword())) {
                 int ret = mService.deleteMember(user.getUsername());
+                // delete 성공시 ret == 1
                 if (ret == 1) {
                     map.put("status", 200);
                 }
