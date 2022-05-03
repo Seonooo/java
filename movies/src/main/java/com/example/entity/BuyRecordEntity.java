@@ -25,13 +25,13 @@ public class BuyRecordEntity {
     // 내역번호
     @Id
     @GeneratedValue(generator = "SEQ_BUY_RECORD", strategy = GenerationType.SEQUENCE)
-    private Long brNo;
+    private Long brno;
     // 등록일
     @DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss.sss")
     @CreationTimestamp
-    private Date brRegdate;
+    private Date brregdate;
     // 구매
     @ManyToOne
-    @JoinColumn(name = "buy_no")
+    @JoinColumn(name = "buyno")
     private BuyEntity buyEntity;
 }

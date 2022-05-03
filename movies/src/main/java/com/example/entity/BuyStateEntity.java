@@ -13,10 +13,10 @@ import lombok.Data;
 public class BuyStateEntity {
     // 구매단계코드
     @Id
-    private Long bsCode;
+    private Long bscode;
     // 구매단계
     @Column(length = 30)
-    private String bsState;
+    private String bsstate;
     // // 구매
     // @JsonBackReference
     // @OneToMany(mappedBy = "buyStateEntity")

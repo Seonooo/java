@@ -26,14 +26,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         System.out.println("loadUserByUsername ->" + username);
         MemberEntity member = mRepository.findById(username).orElse(null);
 
-        System.out.println("loadUserByUsername -> member" + member.toString());
+        // System.out.println("loadUserByUsername -> member" + member.toString());
         // 권한정보를 문자열 배열로 만듦
-        String[] strRole = { member.getMRole() };
+        String[] strRole = { member.getMrole() };
 
         // String 배열 권한을 Collection<GrantedAuthority> 변환함
         Collection<GrantedAuthority> role = AuthorityUtils.createAuthorityList(strRole);
 
-        User user = new User(member.getMId(), member.getMPw(), role);
+        User user = new User(member.getMid(), member.getMpw(), role);
         // System.out.println("UserDetailsService : " + username);
         return user;
     }

@@ -24,20 +24,20 @@ public class CartEntity {
     // 장바구니 번호
     @Id
     @GeneratedValue(generator = "SEQ_CART", strategy = GenerationType.SEQUENCE)
-    private Long caNo;
+    private Long cano;
     // 구매수량
-    private Long caQty;
+    private Long caqty;
     // 등록일
     @DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss.sss")
     @CreationTimestamp
-    private Date caRegdate;
+    private Date caregdate;
     // 스토어
     @ManyToOne
-    @JoinColumn(name = "st_code")
+    @JoinColumn(name = "stcode")
     private StoreEntity storeEntity;
     // 회원
     @ManyToOne
-    @JoinColumn(name = "m_id")
+    @JoinColumn(name = "mid")
     private MemberEntity memberEntity;
     // // 구매
     // @JsonBackReference

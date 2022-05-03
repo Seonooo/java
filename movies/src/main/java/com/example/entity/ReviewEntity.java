@@ -25,21 +25,21 @@ public class ReviewEntity {
     // 리뷰 코드
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_REVIEW")
-    private Long rCode;
+    private Long rcode;
     // 리뷰 내용
     @Lob
-    private String rContent;
+    private String rcontent;
     // 평점
-    private Long rGpa;
+    private Long rgpa;
     // 좋아요수
-    private Long rLike;
+    private Long rlike;
     // 등록일
     @DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss.sss")
     @CreationTimestamp // CURRENT_DATE
-    private Date rRegdate;
+    private Date rregdate;
     // 회원예매
     @ManyToOne
-    @JoinColumn(name = "t_no")
+    @JoinColumn(name = "tno")
     private TicketEntity ticketEntity;
     // 관람객 평점
     // @JsonBackReference

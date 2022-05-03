@@ -25,38 +25,38 @@ public class StoreEntity {
     // 스토어코드
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_STORE")
-    private Long stCode;
+    private Long stcode;
     // 상품명
     @Column(length = 100)
-    private String stName;
+    private String stname;
     // 상품종류
     @Column(length = 20)
-    private String stType;
+    private String sttype;
     // 상품가격
-    private Long stPrice;
+    private Long stprice;
     // 상품수량
-    private Long stQty;
+    private Long stqty;
     // 상품설명
     @Lob
-    private String stContent;
+    private String stcontent;
     // 이미지
     @Lob
-    private byte[] stImage;
+    private byte[] stimage;
     // 이미지타입
     @Column(length = 50)
-    private String stImagetype;
+    private String stimagetype;
     // 이미지크기
-    private Long stImagesize;
+    private Long stimagesize;
     // 이미지이름
     @Column(length = 100)
-    private String stImagename;
+    private String stimagename;
     // 상품등록일
     @DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss.sss")
     @CreationTimestamp // CURRENT_DATE
-    private Date stRegdate;
+    private Date stregdate;
     // 상품상태
     @ManyToOne
-    @JoinColumn(name = "sst_code")
+    @JoinColumn(name = "sstcode")
     private StoreStateEntity storeStateEntity;
     // 장바구니
     // @JsonBackReference

@@ -27,26 +27,26 @@ public class BoardEntity {
     // 게시글번호
     @Id
     @GeneratedValue(generator = "SEQ_BOARD", strategy = GenerationType.SEQUENCE)
-    private Long bNo;
+    private Long bno;
     // 타입
-    private Long bType;
+    private Long btype;
     // 글제목
     @Column(length = 100)
-    private String bTitle;
+    private String btitle;
     // 내용
     @Lob
-    private String bContent;
+    private String bcontent;
     // 작성일
     @DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss.sss")
     @CreationTimestamp
-    private Date bRegdate;
+    private Date bregdate;
     // 조회수
-    private Long bHit;
+    private Long bhit = 0L;
     // 추천수
-    private Long bLike;
+    private Long blike = 0L;
     // 회원
     @ManyToOne
-    @JoinColumn(name = "m_id")
+    @JoinColumn(name = "mid")
     private MemberEntity memberEntity;
     // // 게시판 이미지
     // @JsonBackReference

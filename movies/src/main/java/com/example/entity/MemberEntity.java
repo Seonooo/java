@@ -28,52 +28,52 @@ public class MemberEntity {
     // 아이디
     @Id
     @Column(length = 50)
-    private String mId;
+    private String mid;
     // 비밀번호
     @Column(length = 100)
-    private String mPw;
+    private String mpw;
     // 이름
     @Column(length = 50)
-    private String mName;
+    private String mname;
     // 이메일
     @Column(length = 100)
-    private String mEmail;
+    private String memail;
     // 연락처
     @Column(length = 20)
-    private String mPhone;
+    private String mphone;
     // 권한
     @Column(length = 10)
-    private String mRole;
+    private String mrole;
     // 주소
     @Column(length = 100)
-    private String mAddr;
+    private String maddr;
     // 닉네임
     @Column(length = 50)
-    private String mNickname;
+    private String mnickname;
     // 생일
     @DateTimeFormat(pattern = "yyyy-mm-dd")
-    private Date mBirth;
+    private Date mbirth;
     // 성별
     @Column(length = 10)
-    private String mGender;
+    private String mgender;
     // 이미지(프로필)
     @Lob
-    private byte[] mProfile;
+    private byte[] mprofile;
     // 이미지타입
     @Column(length = 50)
-    private String mProfiletype;
+    private String mprofiletype;
     // 이미지크기
-    private Long mProfilesize;
+    private Long mprofilesize;
     // 이미지이름
     @Column(length = 100)
-    private String mProfilename;
+    private String mprofilename;
     // 가입일
     @DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss.sss")
     @CreationTimestamp // CURRENT_DATE
-    private Date mRegdate;
+    private Date mregdate;
     // 회원등급
     @ManyToOne
-    @JoinColumn(name = "ms_code")
+    @JoinColumn(name = "mscode")
     private MembershipEntity membershipEntity;
     // 게시판
     // @JsonBackReference

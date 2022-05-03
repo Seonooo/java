@@ -14,17 +14,17 @@ import lombok.Data;
 public class AlramEntity {
     // 알람번호
     @Id
-    private Long aNo;
+    private Long ano;
     // 회원
     @ManyToOne
-    @JoinColumn(name = "m_id")
+    @JoinColumn(name = "mid")
     private MemberEntity memberEntity;
     // 영화 테이블
     @ManyToOne
-    @JoinColumn(name = "m_code")
+    @JoinColumn(name = "mcode")
     private MovieEntity movieEntity;
     // 알람상태
     @ManyToOne
-    @JoinColumn(name = "as_code")
+    @JoinColumn(name = "ascode")
     private AlramStateEntity alramStateEntity;
 }

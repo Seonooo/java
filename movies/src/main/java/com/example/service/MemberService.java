@@ -10,6 +10,9 @@ public interface MemberService {
     // 회원가입
     public int insertMember(MemberEntity member);
 
+    // 회원가입
+    public int updateprofile(MemberEntity member);
+
     // 회원한명 조회
     public MemberEntity getMember(String mid);
 

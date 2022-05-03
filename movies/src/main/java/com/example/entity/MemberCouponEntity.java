@@ -20,13 +20,13 @@ public class MemberCouponEntity {
     // 번호
     @Id
     @GeneratedValue(generator = "MCP_NO", strategy = GenerationType.SEQUENCE)
-    private Long mcpNo;
+    private Long mcpno;
     // 회원
     @ManyToOne
-    @JoinColumn(name = "m_id")
+    @JoinColumn(name = "mid")
     private MemberEntity memberEntity;
     // 쿠폰
     @ManyToOne
-    @JoinColumn(name = "cp_code")
+    @JoinColumn(name = "cpcode")
     private CouponEntity couponEntity;
 }

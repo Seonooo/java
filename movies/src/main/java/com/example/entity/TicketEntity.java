@@ -24,26 +24,26 @@ public class TicketEntity {
     // 예매번호
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_TICKET")
-    private Long tNo;
+    private Long tno;
     // 예매일
     @DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss.sss")
     @CreationTimestamp // CURRENT_DATE
-    private Date tRegdate;
+    private Date tregdate;
     // 영화 테이블
     @ManyToOne
-    @JoinColumn(name = "m_code")
+    @JoinColumn(name = "mcode")
     private MovieEntity movieEntity;
     // 회원
     @ManyToOne
-    @JoinColumn(name = "m_id")
+    @JoinColumn(name = "mid")
     private MemberEntity memberEntity;
     // 상영관
     @ManyToOne
-    @JoinColumn(name = "th_code")
+    @JoinColumn(name = "thcode")
     private TheaterEntity theaterEntity;
     // 예매상태
     @ManyToOne
-    @JoinColumn(name = "ts_code")
+    @JoinColumn(name = "tscode")
     private TicketStateEntity ticketStateEntity;
     // 예매기록
     // @JsonBackReference

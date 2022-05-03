@@ -24,25 +24,25 @@ public class VisitorTicketEntity {
     // 비회원 예매번호
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_VTCODE")
-    private Long vtCode;
+    private Long vtcode;
     // 예매일
     @DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss.sss")
     @CreationTimestamp // CURRENT_DATE
-    private Date vtRegdate;
+    private Date vtregdate;
     // 영화 테이블
     @ManyToOne
-    @JoinColumn(name = "m_code")
+    @JoinColumn(name = "mcode")
     private MovieEntity movieEntity;
     // 상영관
     @ManyToOne
-    @JoinColumn(name = "th_code")
+    @JoinColumn(name = "thcode")
     private TheaterEntity theaterEntity;
     // 비회원
     @ManyToOne
-    @JoinColumn(name = "v_phone")
+    @JoinColumn(name = "vphone")
     private VisitorEntity visitorEntity;
     // 예매상태
     @ManyToOne
-    @JoinColumn(name = "ts_code")
+    @JoinColumn(name = "tscode")
     private TicketStateEntity ticketStateEntity;
 }

@@ -26,16 +26,16 @@ public class CommentEntity {
     // 댓글번호
     @Id
     @GeneratedValue(generator = "SEQ_COMMENT", strategy = GenerationType.SEQUENCE)
-    private Long cNo;
+    private Long cno;
     // 댓글내용
     @Lob
-    private String cContent;
+    private String ccontent;
     // 등록일
     @DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss.sss")
     @CreationTimestamp
-    private Date cRegdate;
+    private Date cregdate;
     // 게시판
     @ManyToOne
-    @JoinColumn(name = "b_no")
+    @JoinColumn(name = "bno")
     private BoardEntity boardEntity;
 }

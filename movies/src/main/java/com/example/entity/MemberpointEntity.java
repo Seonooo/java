@@ -19,15 +19,15 @@ public class MemberpointEntity {
     // 회원포인트코드
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_MEMBERPOINT")
-    private Long mpCode;
+    private Long mpcode;
     // 누적포인트
-    private Long mpStackpoint;
+    private Long mpstackpoint = 0L;
     // 현재포인트
-    private Long mpNowpoint;
+    private Long mpnowpoint = 0L;
     // 사용포인트
-    private Long mpUsepoint;
+    private Long mpusepoint = 0L;
     // 회원
     @ManyToOne
-    @JoinColumn(name = "m_id")
+    @JoinColumn(name = "mid")
     private MemberEntity member;
 }

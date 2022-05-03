@@ -20,12 +20,12 @@ public class GpaEntity {
     // 평점 코드
     @Id
     @GeneratedValue(generator = "SEQ_GPA", strategy = GenerationType.SEQUENCE)
-    private Long gCode;
+    private Long gcode;
     // 평균평점
-    private Float gGpa;
+    private Float ggpa;
     // 짧은 리뷰
     @ManyToOne
-    @JoinColumn(name = "r_code")
+    @JoinColumn(name = "rcode")
     private ReviewEntity reviewEntity;
     // 영화 테이블
     // @JsonBackReference

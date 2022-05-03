@@ -26,24 +26,24 @@ public class BoardimgEntity {
     // 이미지번호
     @Id
     @GeneratedValue(generator = "SEQ_BOARDIMG", strategy = GenerationType.SEQUENCE)
-    private Long biNo;
+    private Long bino;
     // 이미지
     @Lob
-    private byte[] biImage;
+    private byte[] biimage;
     // 이미지타입
     @Column(length = 50)
-    private String biImagetype;
+    private String biimagetype;
     // 이미지크기
-    private Long biImagesize;
+    private Long biimagesize;
     // 이미지이름
     @Column(length = 100)
-    private String biImagename;
+    private String biimagename;
     // 등록일
     @DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss.sss")
     @CreationTimestamp
-    private Date biRegdate;
+    private Date biregdate;
     // 게시판
     @ManyToOne
-    @JoinColumn(name = "b_no")
+    @JoinColumn(name = "bno")
     private BoardEntity boardEntity;
 }

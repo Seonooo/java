@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,10 +18,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.entity.CategoryEntity;
 import com.example.entity.MemberEntity;
+import com.example.entity.MembershipEntity;
 import com.example.jwt.jwtUtil;
 import com.example.repository.CategoryRepository;
-import com.example.repository.MemberRepository;
 import com.example.service.MemberService;
+import com.example.service.MembercategoryService;
+import com.example.service.MemberpointService;
 import com.example.service.UserDetailsServiceImpl;
 
 // backend만 구현함. 화면구현 X, vue.js 또는 react.js 연동
@@ -32,13 +33,16 @@ import com.example.service.UserDetailsServiceImpl;
 public class MemberRestController {
 
     @Autowired
-    MemberRepository mRepository;
-
-    @Autowired
     CategoryRepository cRepository;
 
     @Autowired
     MemberService mService;
+
+    @Autowired
+    MembercategoryService mcService;
+
+    @Autowired
+    MemberpointService mpService;
 
     @Autowired
     jwtUtil jwt;
@@ -54,14 +58,35 @@ public class MemberRestController {
             @RequestBody MemberEntity member) {
         Map<String, Object> map = new HashMap<>();
         map.put("status", 0);// 정상적이지 않을 때
-        System.out.println("MemberRestController =====> " + member.toString());
-        BCryptPasswordEncoder bcpe = new BCryptPasswordEncoder();
-        member.setMPw(bcpe.encode(member.getMPw()));
+        try {
 
-        int ret = mService.insertMember(member);
-        if (ret == 1) {
-            map.put("status", 200);
+            BCryptPasswordEncoder bcpe = new BCryptPasswordEncoder();
+            member.setMpw(bcpe.encode(member.getMpw()));
+            System.out.println("MemberRestController =====> " + member.toString());
+            MembershipEntity membership = new MembershipEntity();
+            membership.setMscode("BVIP");
+
+            member.setMembershipEntity(membership);
+
+            int ret = mService.insertMember(member);
+            if (ret == 1) {
+                if (!member.getCategoryCode().isEmpty()) {
+
+                    for (Long code : member.getCategoryCode()) {
+
+                        mcService.insertMembercategory(code, member.getMid());
+
+                    }
+
+                }
+                mpService.insertMemberpoint(member.getMid());
+                map.put("status", 200);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("status", 0);
         }
+
         return map;
     }
 
@@ -72,9 +97,16 @@ public class MemberRestController {
                     MediaType.APPLICATION_JSON_VALUE })
     public Map<String, Object> categoryGET() {
         Map<String, Object> map = new HashMap<>();
-        List<CategoryEntity> list = cRepository.findAll();
-        map.put("category", list);
-        map.put("status", 200);
+        map.put("status", 0);
+        try {
+            List<CategoryEntity> list = cRepository.findAll();
+            map.put("category", list);
+            map.put("status", 200);
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("status", 0);
+        }
+
         return map;
     }
 
@@ -86,19 +118,25 @@ public class MemberRestController {
             @RequestBody MemberEntity member) {
         Map<String, Object> map = new HashMap<>();
         map.put("status", 0);// 정상적이지 않을 때
-        System.out.println("MemberRestController =====> " + member.toString());
-        UserDetails user = userDetailsService.loadUserByUsername(member.getMId());
+        try {
+            System.out.println("MemberRestController =====> " + member.toString());
+            UserDetails user = userDetailsService.loadUserByUsername(member.getMid());
 
-        BCryptPasswordEncoder bcpe = new BCryptPasswordEncoder();
-        // 암호화가 되지않은 암호와 암호화된 암호를 비교
-        if (bcpe.matches(member.getMPw(), user.getPassword())) {
-            String token = jwt.generatorToken(member.getMId());
+            BCryptPasswordEncoder bcpe = new BCryptPasswordEncoder();
+            // 암호화가 되지않은 암호와 암호화된 암호를 비교
+            if (bcpe.matches(member.getMpw(), user.getPassword())) {
+                String token = jwt.generatorToken(member.getMid());
 
-            MemberEntity member2 = mRepository.findById(member.getMId()).orElse(null);
-            String rToken = jwt.generatorRoleToken(member2.getMRole());
-            map.put("rToken", rToken);
-            map.put("status", 200);
-            map.put("token", token);
+                MemberEntity member2 = mService.getMember(member.getMid());
+                String rToken = jwt.generatorRoleToken(member2.getMrole());
+                map.put("rToken", rToken);
+                map.put("status", 200);
+                map.put("token", token);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("status", 0);
         }
 
         return map;
@@ -114,15 +152,19 @@ public class MemberRestController {
         // 토큰이 있어야 실행됨
         Map<String, Object> map = new HashMap<>();
         map.put("status", 0);
-
-        System.out.println(token);
-        System.out.println(rToken);
-        if (!token.isEmpty() && !rToken.isEmpty()) {
-            map.put("status", 200);
-            String username = jwt.extractUsername(token);
-            String userrole = jwt.extractUsername(rToken);
-            map.put("username", username);
-            map.put("userrole", userrole);
+        try {
+            System.out.println(token);
+            System.out.println(rToken);
+            if (!token.isEmpty() && !rToken.isEmpty()) {
+                map.put("status", 200);
+                String username = jwt.extractUsername(token);
+                String userrole = jwt.extractUsername(rToken);
+                map.put("username", username);
+                map.put("userrole", userrole);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("status", 0);
         }
 
         return map;
@@ -159,9 +201,9 @@ public class MemberRestController {
             @RequestBody MemberEntity member) {
         Map<String, Object> map = new HashMap<>();
         try {
-            System.out.println("MemberRestController ===> mamberid " + member.getMId());
+            System.out.println("MemberRestController ===> mamberid " + member.getMid());
 
-            MemberEntity memberid = mRepository.findById(member.getMId()).orElse(null);
+            MemberEntity memberid = mService.getMember(member.getMid());
             System.out.println(memberid.toString());
             map.put("status", 0);
         } catch (Exception e) {
@@ -173,30 +215,34 @@ public class MemberRestController {
 
     // 프로필사진 업데이트
     // http://127.0.0.1:9090/ROOT/api/member/updateprofile
-    @PostMapping(value = "/updateprofile", consumes = { MediaType.ALL_VALUE }, produces = {
-            MediaType.APPLICATION_JSON_VALUE })
-
+    @RequestMapping(value = "/updateprofile", method = { RequestMethod.PUT }, consumes = {
+            MediaType.ALL_VALUE }, produces = {
+                    MediaType.APPLICATION_JSON_VALUE })
     public Map<String, Object> updateprofilePOST(
             @RequestParam(name = "file", required = true) MultipartFile file,
             @RequestHeader(name = "TOKEN") String token) {
         Map<String, Object> map = new HashMap<>();
+        map.put("status", 0);
         try {
             if (!token.isEmpty()) {
                 String userid = jwt.extractUsername(token);
                 map.put("userid", userid);
-                MemberEntity member = mRepository.findById(userid).orElse(null);
+                MemberEntity member = mService.getMember(userid);
                 if (file != null) {
                     if (!file.isEmpty()) {
-                        member.setMProfile(file.getBytes());
-                        member.setMProfilename(file.getOriginalFilename());
-                        member.setMProfilesize(file.getSize());
-                        member.setMProfiletype(file.getContentType());
+                        member.setMprofile(file.getBytes());
+                        member.setMprofilename(file.getOriginalFilename());
+                        member.setMprofilesize(file.getSize());
+                        member.setMprofiletype(file.getContentType());
                     }
                 }
-                mRepository.save(member);
+                int ret = mService.updateprofile(member);
+
+                if (ret == 1) {
+                    map.put("status", 200);
+                }
             }
 
-            map.put("status", 200);
         } catch (Exception e) {
             e.printStackTrace();
             map.put("status", 0);
@@ -206,25 +252,30 @@ public class MemberRestController {
 
     // 프로필사진 지우기
     // http://127.0.0.1:9090/ROOT/api/member/deleteprofile
-    @PostMapping(value = "/deleteprofile", consumes = { MediaType.ALL_VALUE }, produces = {
-            MediaType.APPLICATION_JSON_VALUE })
+    @RequestMapping(value = "/updateprofile", method = { RequestMethod.DELETE }, consumes = {
+            MediaType.ALL_VALUE }, produces = {
+                    MediaType.APPLICATION_JSON_VALUE })
 
     public Map<String, Object> deleteprofilePOST(
             @RequestHeader(name = "TOKEN") String token) {
         Map<String, Object> map = new HashMap<>();
+        map.put("status", 0);
         try {
             if (!token.isEmpty()) {
                 String userid = jwt.extractUsername(token);
                 map.put("userid", userid);
-                MemberEntity member = mRepository.findById(userid).orElse(null);
-                member.setMProfile(null);
-                member.setMProfilename(null);
-                member.setMProfilesize(null);
-                member.setMProfiletype(null);
-                mRepository.save(member);
+                MemberEntity member = mService.getMember(userid);
+                member.setMprofile(null);
+                member.setMprofilename(null);
+                member.setMprofilesize(null);
+                member.setMprofiletype(null);
+                int ret = mService.updateprofile(member);
+
+                if (ret == 1) {
+                    map.put("status", 200);
+                }
             }
 
-            map.put("status", 200);
         } catch (Exception e) {
             e.printStackTrace();
             map.put("status", 0);
@@ -246,17 +297,15 @@ public class MemberRestController {
         try {
             // 토큰으로 아이디받음
             String mId = jwt.extractUsername(token);
-            member.setMId(mId);
+            member.setMid(mId);
             // 토큰에서 받은 아이디로 user정보 받음
             UserDetails user = userDetailsService.loadUserByUsername(mId);
             BCryptPasswordEncoder bcpe = new BCryptPasswordEncoder();
 
-            if (bcpe.matches(member.getMPw(), user.getPassword())) {
+            if (bcpe.matches(member.getMpw(), user.getPassword())) {
                 // newMember에 업데이트할 정보를 가져옴
-                int ret = mService.updateMember(member);
-                if (ret == 1) {
-                    map.put("status", 200);
-                }
+                mService.updateMember(member);
+                map.put("status", 200);
             }
 
         } catch (Exception e) {
@@ -279,13 +328,9 @@ public class MemberRestController {
             UserDetails user = userDetailsService.loadUserByUsername(mId);
             BCryptPasswordEncoder bcpe = new BCryptPasswordEncoder();
 
-            // 예전암호와 입력암호 일치확인 후 변경
-            if (bcpe.matches(oldmember.getMPw(), user.getPassword())) {
-                int ret = mService.deleteMember(user.getUsername());
-                // delete 성공시 ret == 1
-                if (ret == 1) {
-                    map.put("status", 200);
-                }
+            if (bcpe.matches(oldmember.getMpw(), user.getPassword())) {
+                mService.deleteMember(user.getUsername());
+                map.put("status", 200);
             }
 
             map.put("status", 200);

@@ -25,23 +25,23 @@ public class EventEntity {
     // 이벤트코드
     @Id
     @GeneratedValue(generator = "SEQ_EVENT", strategy = GenerationType.SEQUENCE) // 이벤트 코드
-    private Long eCode;
+    private Long ecode;
     // 이벤트내용
     @Lob
-    private String eContent;
+    private String econtent;
     // 이벤트제목
     @Column(length = 50)
-    private String eTitle;
+    private String etitle;
     // 이벤트시작일
     @DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss.sss")
-    private Date eRelease;
+    private Date erelease;
     // 이벤트종료일
     @DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss.sss")
-    private Date eDeadline;
+    private Date edeadline;
     // 이벤트등록일
     @DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss.sss")
     @CreationTimestamp // CURRENT_DATE
-    private Date eRegdate;
+    private Date eregdate;
     // 쿠폰
     // @JsonBackReference
     // @OneToMany(mappedBy = "eventEntity")

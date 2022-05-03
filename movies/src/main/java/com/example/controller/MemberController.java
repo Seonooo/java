@@ -52,7 +52,7 @@ public class MemberController {
             Model model,
             @AuthenticationPrincipal User user) {
         MemberEntity member = mRepository.findById("aaa").orElse(null);
-        System.out.println(member.getMId());
+        System.out.println(member.getMid());
         model.addAttribute("user", user);
         return "/member/home";
     }
@@ -94,17 +94,17 @@ public class MemberController {
             @ModelAttribute MemberEntity member) throws ParseException {
         // 비밀번호 HASH
         BCryptPasswordEncoder bcpe = new BCryptPasswordEncoder();
-        member.setMPw(bcpe.encode(member.getMPw()));
+        member.setMpw(bcpe.encode(member.getMpw()));
 
         // 생년월일 넣기
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String birth = member.getYear() + "-" + member.getMonth() + "-" + member.getDay();
         Date date = formatter.parse(birth);
-        member.setMBirth(date);
+        member.setMbirth(date);
 
         // 멤버쉽 추가
         MembershipEntity membership = new MembershipEntity();
-        membership.setMsCode("BVIP");
+        membership.setMscode("BVIP");
         member.setMembershipEntity(membership);
 
         mRepository.save(member);
@@ -115,7 +115,7 @@ public class MemberController {
             MembercategoryEntity membercategory = new MembercategoryEntity();
             CategoryEntity category = new CategoryEntity();
             membercategory.setMember(member);
-            category.setCCode(code);
+            category.setCcode(code);
             membercategory.setCategory(category);
             mcRepository.save(membercategory);
             System.out.println(code);
@@ -124,9 +124,9 @@ public class MemberController {
         // 멤버 포인트 생성
         MemberpointEntity memberpoint = new MemberpointEntity();
         memberpoint.setMember(member);
-        memberpoint.setMpNowpoint(0L);
-        memberpoint.setMpStackpoint(0L);
-        memberpoint.setMpUsepoint(0L);
+        memberpoint.setMpnowpoint(0L);
+        memberpoint.setMpstackpoint(0L);
+        memberpoint.setMpusepoint(0L);
 
         mpRepository.save(memberpoint);
 

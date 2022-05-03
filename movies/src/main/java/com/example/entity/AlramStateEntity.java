@@ -14,10 +14,10 @@ import lombok.Data;
 public class AlramStateEntity {
     // 알람상태코드
     @Id
-    private Long asCode;
+    private Long ascode;
     // 알람상태
     @Column(length = 20)
-    private String asState;
+    private String asstate;
     // 알람
     // @JsonBackReference
     // @OneToMany(mappedBy = "alramStateEntity")

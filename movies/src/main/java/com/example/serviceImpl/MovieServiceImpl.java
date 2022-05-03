@@ -95,7 +95,7 @@ public class MovieServiceImpl implements MovieService {
                 String naverCode = naverHref.substring(naverHref.lastIndexOf("=") + 1);
                 // 영화코드
                 Long movieCode = Long.parseLong(naverCode);
-                mEntity.setMCode(movieCode);
+                mEntity.setMcode(movieCode);
 
                 System.out.println("영화코드 : " + naverCode);
 
@@ -108,12 +108,12 @@ public class MovieServiceImpl implements MovieService {
                 Element moviePoster = naverDocOne.select("div.poster img").last();
                 String moviePosterUrl = moviePoster.absUrl("src");
                 System.out.println("포스터주소 : " + moviePosterUrl);
-                posterEntity.setPImageUrl(moviePosterUrl);
+                posterEntity.setPimageUrl(moviePosterUrl);
 
                 // 영화제목
                 Elements movieTitle = naverDocOne.select("h3.h_movie a");
                 System.out.println("제목 : " + movieTitle.first().text());
-                mEntity.setMTitle(movieTitle.first().text());
+                mEntity.setMtitle(movieTitle.first().text());
 
                 // 기자 평론가 평점
                 Elements movieGpa = naverDocOne.select("div.star_score em");
@@ -125,7 +125,7 @@ public class MovieServiceImpl implements MovieService {
                 Float l = Float.parseFloat(gap);
                 gapList.add(l);
                 System.out.println("평론가 평점 : " + gapList.get(i));
-                mEntity.setMGpa(gapList.get(i));
+                mEntity.setMgpa(gapList.get(i));
 
                 // 배우 3명
                 String movieActorUrl = "https://movie.naver.com/movie/bi/mi/detail.naver?code=" + naverCode;
@@ -142,7 +142,7 @@ public class MovieServiceImpl implements MovieService {
 
                 }
                 System.out.println("배우3명 : " + movieActorsList.toString());
-                mEntity.setMActor(movieActorsList.toString());
+                mEntity.setMactor(movieActorsList.toString());
 
                 // 감독 1명
                 String movieDirectorUrl = "https://movie.naver.com/movie/bi/mi/detail.naver?code=" + naverCode;
@@ -150,12 +150,12 @@ public class MovieServiceImpl implements MovieService {
                 Elements movieDiretor = movieDirectorDoc.select("div.dir_product a");
                 String movieDirector = movieDiretor.first().text();
                 System.out.println("감독 1명 : " + movieDirector);
-                mEntity.setMDirector(movieDirector);
+                mEntity.setMdirector(movieDirector);
 
                 // 랭킹
                 int rank = i + 1;
                 System.out.println("순위 : " + rank);
-                mEntity.setMRank(Long.valueOf(rank));
+                mEntity.setMrank(Long.valueOf(rank));
 
                 // 상영시간
                 Elements movieTime = naverDocOne.select("dl.info_spec span");
@@ -164,7 +164,7 @@ public class MovieServiceImpl implements MovieService {
                         movieTimeLength);
 
                 System.out.println("상영시간 : " + movieTimes);
-                mEntity.setMTime(movieTimes);
+                mEntity.setMtime(movieTimes);
 
                 // 개봉일, 마감일
                 Elements movieRelease = naverDocOne.select("dl.info_spec span");
@@ -176,23 +176,23 @@ public class MovieServiceImpl implements MovieService {
 
                 // 개봉일
                 cal.setTime(formatter.parse(movieOneRelease));
-                mEntity.setMRelease(cal.getTime());
+                mEntity.setMrelease(cal.getTime());
                 System.out.println("개봉일 : =========>" + cal.getTime().toString());
 
                 // 마감일
                 cal.add(Calendar.MONTH, 2);
-                mEntity.setMDeadline(cal.getTime());
+                mEntity.setMdeadline(cal.getTime());
                 System.out.println("마감일 : =========>" + cal.getTime().toString());
 
                 // 짧은 줄거리
                 Elements movieShot = naverDocOne.select("h5.h_tx_story ");
                 System.out.println("짧은 줄거리 : " + movieShot.text());
-                mEntity.setMLong(movieShot.text());
+                mEntity.setMlong(movieShot.text());
 
                 // 긴 줄거리
                 Elements movieLong = naverDocOne.select("p.con_tx");
                 System.out.println("긴줄거리 : " + movieLong.first().text());
-                mEntity.setMShot(movieLong.text());
+                mEntity.setMshot(movieLong.text());
 
                 // 등급코드
                 String age = naverDocOne.select("p.info_spec span:nth-child(5) a").attr("href");
@@ -224,7 +224,7 @@ public class MovieServiceImpl implements MovieService {
                 }
 
                 // 기본 좋아요수
-                mEntity.setMLike(0L);
+                mEntity.setMlike(0L);
 
                 // PosterEntity에 movieEntity Join
                 posterEntity.setMovieEntity(mEntity);
@@ -238,7 +238,7 @@ public class MovieServiceImpl implements MovieService {
                     MovieCategoryEntity mcEntity = new MovieCategoryEntity();
                     CategoryEntity category = new CategoryEntity();
                     System.out.println(genreList.get(g));
-                    category.setCCode(genreList.get(g));
+                    category.setCcode(genreList.get(g));
                     mcEntity.setCategoryEntity(category);
                     mcEntity.setMovieEntity(mEntity);
                     movieCategoryRepository.save(mcEntity);
@@ -258,24 +258,24 @@ public class MovieServiceImpl implements MovieService {
     public int insertMovie(MovieEntity movie, String nation, Long filmRating, Long gpa, Long mscode) {
         try {
             MovieEntity movieEntity = new MovieEntity();
-            movieEntity.setMCode(movie.getMCode());
-            movieEntity.setMActor(movie.getMActor());
-            movieEntity.setMDirector(movie.getMDirector());
-            movieEntity.setMGpa(movie.getMGpa());
-            movieEntity.setMLike(0L);
-            movieEntity.setMTime(movie.getMTime());
-            movieEntity.setMTitle(movie.getMTitle());
-            movieEntity.setMShot(movie.getMShot());
-            movieEntity.setMLong(movie.getMLong());
-            movieEntity.setMRelease(movie.getMRelease());
+            movieEntity.setMcode(movie.getMcode());
+            movieEntity.setMactor(movie.getMactor());
+            movieEntity.setMdirector(movie.getMdirector());
+            movieEntity.setMgpa(movie.getMgpa());
+            movieEntity.setMlike(0L);
+            movieEntity.setMtime(movie.getMtime());
+            movieEntity.setMtitle(movie.getMtitle());
+            movieEntity.setMshot(movie.getMshot());
+            movieEntity.setMlong(movie.getMlong());
+            movieEntity.setMrelease(movie.getMrelease());
             Calendar cal = Calendar.getInstance();
-            cal.setTime(movie.getMRelease());
+            cal.setTime(movie.getMrelease());
 
             // 마감일 : 개봉일 +2달
             cal.add(Calendar.MONTH, 2);
-            movieEntity.setMDeadline(cal.getTime());
+            movieEntity.setMdeadline(cal.getTime());
 
-            movieEntity.setMRank(movie.getMRank());
+            movieEntity.setMrank(movie.getMrank());
 
             movieEntity.setMovieStateEntity(movieStateRepository.findById(mscode).orElse(null));
             movieEntity.setNationEntity(nationRepository.findById(nation).orElse(null));
@@ -293,7 +293,7 @@ public class MovieServiceImpl implements MovieService {
     public int updateHit(Long code) {
         try {
             MovieEntity movieEntity = movieRepository.findById(code).orElse(null);
-            movieEntity.setMLike(movieEntity.getMLike() + 1);
+            movieEntity.setMlike(movieEntity.getMlike() + 1);
             movieRepository.save(movieEntity);
             return 1;
         } catch (Exception e) {
@@ -318,8 +318,8 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public int updateMovie(MovieEntity movie, Long mscode) {
         try {
-            MovieEntity movieEntity = movieRepository.findById(movie.getMCode()).orElse(null);
-            movieEntity.setMDeadline(movie.getMDeadline());
+            MovieEntity movieEntity = movieRepository.findById(movie.getMcode()).orElse(null);
+            movieEntity.setMdeadline(movie.getMdeadline());
             MovieStateEntity movieStateEntity = movieStateRepository.findById(mscode).orElse(null);
             movieEntity.setMovieStateEntity(movieStateEntity);
             movieRepository.save(movieEntity);

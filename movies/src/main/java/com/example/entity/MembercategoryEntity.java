@@ -19,13 +19,13 @@ public class MembercategoryEntity {
     // 회원선호장르번호
     @Id
     @GeneratedValue(generator = "SEQ_MEMBERCATEGORY", strategy = GenerationType.SEQUENCE)
-    private Long mcCode;
+    private Long mccode;
     // 장르
     @ManyToOne
-    @JoinColumn(name = "c_code")
+    @JoinColumn(name = "ccode")
     private CategoryEntity category;
     // 회원
     @ManyToOne
-    @JoinColumn(name = "m_id")
+    @JoinColumn(name = "mid")
     private MemberEntity member;
 }

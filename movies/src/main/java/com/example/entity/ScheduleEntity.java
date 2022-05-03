@@ -24,27 +24,27 @@ public class ScheduleEntity {
     // 스케줄번호
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_SCHEDULE")
-    private Long sNo;
+    private Long sno;
     // 날짜
     @DateTimeFormat(pattern = "yyyy-mm-dd")
     @CreationTimestamp // CURRENT_DATE
-    private Date sDate;
+    private Date sdate;
     // 영화시작시간
     @DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss.sss")
-    private Date sStart;
+    private Date sstart;
     // 영화종료시간
     @DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss.sss")
-    private Date sEnd;
+    private Date send;
     // 등록일
     @DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss.sss")
     @CreationTimestamp // CURRENT_DATE
-    private Date sRegdate;
+    private Date sregdate;
     // 상영관
     @ManyToOne
-    @JoinColumn(name = "th_code")
+    @JoinColumn(name = "thcode")
     private TheaterEntity theaterEntity;
     // 영화 테이블
     @ManyToOne
-    @JoinColumn(name = "m_code")
+    @JoinColumn(name = "mcode")
     private MovieEntity movieEntity;
 }

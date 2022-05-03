@@ -27,26 +27,26 @@ public class CouponEntity {
     // 쿠폰코드
     @Id
     @GeneratedValue(generator = "SEQ_COUPON", strategy = GenerationType.SEQUENCE)
-    private Long cpCode;
+    private Long cpcode;
     // 쿠폰타입
     @Column(length = 20)
-    private String cpType;
+    private String cptype;
     // 쿠폰이름
     @Column(length = 100)
-    private String cpTitle;
+    private String cptitle;
     // 쿠폰내용
     @Lob
-    private String cpContent;
+    private String cpcontent;
     // 쿠폰 발행일(등록일)
     @DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss.sss")
     @CreationTimestamp
-    private Date cpRelease;
+    private Date cprelease;
     // 쿠폰 만료일
     @DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss.sss")
-    private Date cpDeadline;
+    private Date cpdeadline;
     // 이벤트
     @ManyToOne
-    @JoinColumn(name = "e_code")
+    @JoinColumn(name = "ecode")
     private EventEntity eventEntity;
     // 회원 보유 쿠폰
     // @JsonBackReference

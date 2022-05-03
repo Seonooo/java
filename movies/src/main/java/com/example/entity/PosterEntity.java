@@ -26,28 +26,28 @@ public class PosterEntity {
     // 코드
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_POSTER")
-    private Long pCode;
+    private Long pcode;
     // 이미지
     @Lob
-    private byte[] pImage;
+    private byte[] pimage;
     // 이미지타입
     @Column(length = 50)
-    private String pImagetype;
+    private String pimagetype;
     // 이미지크기
-    private Long pImagesize;
+    private Long pimagesize;
     // 이미지이름
     @Column(length = 100)
-    private String pImagename;
+    private String pimagename;
     // 대표이미지
-    private Long pHead;
+    private Long phead;
     // 이미지 url
-    private String pImageUrl;
+    private String pimageUrl;
     // 등록일
     @DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss.sss")
     @CreationTimestamp // CURRENT_DATE
-    private Date pRegdate;
+    private Date pregdate;
     // 영화 테이블
     @ManyToOne
-    @JoinColumn(name = "m_code")
+    @JoinColumn(name = "mcode")
     private MovieEntity movieEntity;
 }

@@ -13,10 +13,10 @@ import lombok.Data;
 public class NationEntity {
     // 국가코드
     @Id
-    private String nCode;
+    private String ncode;
     // 국가
     @Column(length = 50)
-    private String nNation;
+    private String nnation;
     // // 영화 테이블
     // @JsonBackReference
     // @OneToMany(mappedBy = "nationEntity")

@@ -13,10 +13,10 @@ import lombok.Data;
 public class StoreStateEntity {
     // 상품상태코드
     @Id
-    private Long sstCode;
+    private Long sstcode;
     // 상품상태
     @Column(length = 50)
-    private String sstState;
+    private String sststate;
     // 스토어
     // @JsonBackReference
     // @OneToMany(mappedBy = "storeStateEntity")

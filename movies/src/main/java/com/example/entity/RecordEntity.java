@@ -25,13 +25,13 @@ public class RecordEntity {
     // 기록코드
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_RECORD")
-    private Long rCode;
+    private Long rcode;
     // 등록일
     @DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss.sss")
     @CreationTimestamp // CURRENT_DATE
-    private Date rRegdate;
+    private Date rregdate;
     // 회원예매
     @ManyToOne
-    @JoinColumn(name = "t_no")
+    @JoinColumn(name = "tno")
     private TicketEntity ticketEntity;
 }

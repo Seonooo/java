@@ -21,55 +21,58 @@ import lombok.Data;
 public class MovieEntity {
     // 영화코드
     @Id
-    private Long mCode;
+    private Long mcode;
     // 제목
     @Column(length = 250)
-    private String mTitle;
+    private String mtitle;
     // 개봉일
     @DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss.sss")
-    private Date mRelease;
+    private Date mrelease;
     // 마감일
     @DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss.sss")
-    private Date mDeadline;
+    private Date mdeadline;
     // 평점
-    private Float mGpa;
+    private Float mgpa;
     // 상영시간
     @Column(length = 10)
-    private String mTime;
+    private String mtime;
     // 순위
-    private Long mRank;
+    private Long mrank;
     // 등록일
     @DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss.sss")
     @CreationTimestamp // CURRENT_DATE
-    private Date mRegdate;
+    private Date mregdate;
     // 배우
-    private String mActor;
+    private String mactor;
     // 감독
-    @Column(length = 250)
-    private String mDirector;
+    private String mdirector;
     // 영화좋아요수
-    private Long mLike;
+    private Long mlike;
     // 국가
     @ManyToOne
-    @JoinColumn(name = "n_code")
+    @JoinColumn(name = "ncode")
     private NationEntity nationEntity;
+    // 장르
+    @ManyToOne
+    @JoinColumn(name = "ccode")
+    private CategoryEntity categoryEntity;
     // 등급
     @ManyToOne
-    @JoinColumn(name = "f_code")
+    @JoinColumn(name = "fcode")
     private FilmRatingEntity filmratingEntity;
     // 관람객 평점
     @ManyToOne
-    @JoinColumn(name = "g_code")
+    @JoinColumn(name = "gcode")
     private GpaEntity gpaEntity;
     // 짧은줄거리
     @Lob
-    private String mShot;
+    private String mshot;
     // 긴줄거리
     @Lob
-    private String mLong;
-    // 영화개봉상태
+    private String mlong;
+    // 영화상태
     @ManyToOne
-    @JoinColumn(name = "ms_code")
+    @JoinColumn(name = "mscode")
     private MovieStateEntity movieStateEntity;
     // 포스터
     // @JsonBackReference
@@ -92,10 +95,4 @@ public class MovieEntity {
     // @JsonBackReference
     // @OneToMany(mappedBy = "movieEntity")
     // private List<AlramEntity> alramEntityList = new ArrayList<>();
-
-    public interface movie {
-        String getmTitle();
-
-        long getmCode();
-    }
 }

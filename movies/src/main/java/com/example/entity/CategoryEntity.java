@@ -19,10 +19,10 @@ import lombok.Data;
 public class CategoryEntity {
     // 장르코드
     @Id
-    private Long cCode;
+    private Long ccode;
     // 장르
     @Column(length = 50)
-    private String cCategory;
+    private String ccategory;
     // // 영화 테이블
     // @JsonBackReference
     // @OneToMany(mappedBy = "categoryEntity")

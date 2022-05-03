@@ -14,13 +14,13 @@ public class VisitorEntity {
     // 비회원 연락처
     @Id
     @Column(length = 20)
-    private String vPhone;
+    private String vphone;
     // 비회원 이름
     @Column(length = 30)
-    private String vName;
+    private String vname;
     // 비회원 암호
     @Column(length = 100)
-    private String vPw;
+    private String vpw;
     // 비회원예매
     // @JsonBackReference
     // @OneToMany(mappedBy = "visitorEntity")

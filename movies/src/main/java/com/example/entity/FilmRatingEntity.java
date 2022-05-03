@@ -13,10 +13,10 @@ import lombok.Data;
 public class FilmRatingEntity {
     // 등급코드
     @Id
-    private Long fCode;
+    private Long fcode;
     // 등급
     @Column(length = 50)
-    private String fFilmrating;
+    private String ffilmrating;
     // 영화 테이블
     // @JsonBackReference
     // @OneToMany(mappedBy = "filmratingEntity")

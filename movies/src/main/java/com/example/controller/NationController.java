@@ -41,8 +41,8 @@ public class NationController {
 
         for (int i = 0; i < 245; i++) {
             NationEntity nation = new NationEntity();
-            nation.setNCode(msg[1 + (i * 24)]);
-            nation.setNNation(msg[15 + (i * 24)]);
+            nation.setNcode(msg[1 + (i * 24)]);
+            nation.setNnation(msg[15 + (i * 24)]);
             nationlist.add(nation);
         }
 
@@ -50,8 +50,8 @@ public class NationController {
 
         for (int i = 0; i < nationlist.size(); i++) {
             NationEntity nation = new NationEntity();
-            nation.setNCode(nationlist.get(i).getNCode());
-            nation.setNNation(nationlist.get(i).getNNation());
+            nation.setNcode(nationlist.get(i).getNcode());
+            nation.setNnation(nationlist.get(i).getNnation());
             nRepository.save(nation);
         }
 

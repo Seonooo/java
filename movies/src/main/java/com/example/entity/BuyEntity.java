@@ -25,18 +25,18 @@ public class BuyEntity {
     // 구매번호
     @Id
     @GeneratedValue(generator = "SEQ_BUY", strategy = GenerationType.SEQUENCE)
-    private Long buyNo;
+    private Long buyno;
     // 구매일
     @DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss.sss")
     @CreationTimestamp
-    private Date buyRegdate;
+    private Date buyregdate;
     // 구매단계
     @ManyToOne
-    @JoinColumn(name = "bs_code")
+    @JoinColumn(name = "bscode")
     private BuyStateEntity buyStateEntity;
     // 장바구니
     @ManyToOne
-    @JoinColumn(name = "ca_no")
+    @JoinColumn(name = "cano")
     private CartEntity cartEntity;
     // // 구매내역
     // @JsonBackReference
