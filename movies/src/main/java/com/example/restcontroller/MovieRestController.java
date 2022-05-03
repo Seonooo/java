@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.example.entity.MovieCategoryEntity;
 import com.example.entity.MovieEntity;
-import com.example.repository.MovieRepository;
 import com.example.service.MovieService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,15 +117,55 @@ public class MovieRestController {
     public Map<String, Object> selectMovies(
             // page받아오기, 페이지에 영화5개씩
             @RequestParam(name = "page", defaultValue = "1") int page,
-            @RequestParam(name = "size", defaultValue = "10") int size) {
+            @RequestParam(name = "size", defaultValue = "10") int size,
+            @RequestParam(name = "sort", defaultValue = "1") int sort,
+            @RequestParam(name = "genre", defaultValue = "0") long genre,
+            @RequestParam(name = "mscode", defaultValue = "1", required = false) long mscode,
+            @RequestParam(name = "title", defaultValue = "") String title) {
         Map<String, Object> map = new HashMap<>();
         map.put("status", 0);
         try {
+            // genre = 0 : 장르선택x
+            // sort == 1 : 장르별
+            // sort == 2 : 상태별
+            // mscode => 0 : 개봉전, 1 : 상영중, 2 : 상영마감
+            if (genre > 0) {
+                // 장르별 리스트
+                if (sort == 1) {
+                    List<MovieCategoryEntity> movies = movieService.selectMovieGenre(page - 1, size,
+                            genre).getContent();
+                    if (movies != null) {
+                        map.put("status", 200);
+                        map.put("movies", movies);
+                    }
+                }
+            }
             // size 지정하기
-            List<MovieEntity> movies = movieService.selectMovies(page, size);
-            if (movies != null) {
-                map.put("status", 200);
-                map.put("movies", movies);
+            else if (genre == 0) {
+                // 상영 상태별 리스트
+                if (sort == 2) {
+                    List<MovieEntity> movies = movieService.selectMovieState(page - 1, size, mscode).getContent();
+                    if (movies != null) {
+                        map.put("status", 200);
+                        map.put("movies", movies);
+                    }
+                } else if (title.length() > 1) {
+                    List<MovieEntity> movies = movieService.selectMovieTitle(page, size, title).getContent();
+                    if (movies != null) {
+                        map.put("status", 200);
+                        map.put("movies", movies);
+                    }
+                }
+                // 전체 리스트
+                else {
+                    List<MovieEntity> movies = movieService.selectMovies(page - 1,
+                            size).getContent();
+                    if (movies != null) {
+                        map.put("status", 200);
+                        map.put("movies", movies);
+                    }
+                }
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -147,6 +187,19 @@ public class MovieRestController {
             if (ret == 1) {
                 map.put("status", 200);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return map;
+    }
+
+    // 영화 포스터 등록하기
+    @RequestMapping(value = "/poster", method = { RequestMethod.POST }, consumes = { MediaType.ALL_VALUE }, produces = {
+            MediaType.MULTIPART_FORM_DATA_VALUE })
+    public Map<String, Object> moviePoster() {
+        Map<String, Object> map = new HashMap<>();
+        try {
+
         } catch (Exception e) {
             e.printStackTrace();
         }

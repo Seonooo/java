@@ -28,7 +28,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -349,11 +351,12 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public List<MovieEntity> selectMovies(Integer page, Integer size) {
+    public Page<MovieEntity> selectMovies(Integer page, Integer size) {
         try {
-            // mRank를 기준으로 오름차순
+            // 랭킹 1위부터
             PageRequest pageRequest = PageRequest.of(page, size, Sort.by("mRank").ascending());
-            return movieRepository.findAll(pageRequest).getContent();
+            Page<MovieEntity> movie = movieRepository.findAll(pageRequest);
+            return movie;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -361,13 +364,12 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public List<MovieEntity> selectMovieGenre(Integer page, Integer size, Long gcode) {
+    public Page<MovieCategoryEntity> selectMovieGenre(Integer page, Integer size, Long gcode) {
         try {
-            PageRequest pageRequest = PageRequest.of(page, size, Sort.by("mRank").ascending());
-            MovieCategoryEntity mCategoryEntity = movieCategoryRepository.findById(gcode).orElse(null);
-            Long mCode = mCategoryEntity.getMovieEntity().getMCode();
-
-            return movieRepository.findAll();
+            Pageable pageable = PageRequest.of(page, size);
+            Page<MovieCategoryEntity> categoryMovies = movieCategoryRepository.findByCategoryEntity_cCode(gcode,
+                    pageable);
+            return categoryMovies;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -375,21 +377,37 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public List<MovieEntity> selectMovieState(Integer page, Integer size, Long mscode) {
+    public Page<MovieEntity> selectMovieState(Integer page, Integer size, Long mscode) {
         try {
-            return movieRepository.findAll();
+            Pageable pageable = PageRequest.of(page, size);
+            Page<MovieEntity> stateMovies = movieRepository.findByMovieStateEntity_msCode(mscode, pageable);
+            return stateMovies;
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
 
     @Override
-    public List<MovieEntity> selectMovieAllList() {
+    public Page<MovieEntity> selectMovieTitle(Integer page, Integer size, String title) {
         try {
-            return movieRepository.findAll();
+            Pageable pageable = PageRequest.of(page, size);
+            Page<MovieEntity> titleMovies = movieRepository.findBymTitleLike(title, pageable);
+            return titleMovies;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    @Override
+    public int insertMoviePoster() {
+        try {
+
+            return 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
         }
     }
 

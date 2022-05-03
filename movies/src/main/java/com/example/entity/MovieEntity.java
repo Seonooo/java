@@ -92,4 +92,10 @@ public class MovieEntity {
     // @JsonBackReference
     // @OneToMany(mappedBy = "movieEntity")
     // private List<AlramEntity> alramEntityList = new ArrayList<>();
+
+    public interface movie {
+        String getmTitle();
+
+        long getmCode();
+    }
 }
