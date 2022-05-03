@@ -10,7 +10,6 @@ import com.example.service.MovieService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -142,6 +141,7 @@ public class MovieRestController {
                         map.put("status", 200);
                         map.put("movies", genreOfMoives);
                         map.put("total", total);
+
                     }
                 }
             }
@@ -178,6 +178,7 @@ public class MovieRestController {
                         map.put("status", 200);
                         map.put("movies", moviesInPage);
                         map.put("total", total);
+                        map.put("pages", (total - 1) / size + 1);
                     }
                 }
 

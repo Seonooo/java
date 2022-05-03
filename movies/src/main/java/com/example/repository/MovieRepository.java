@@ -1,7 +1,5 @@
 package com.example.repository;
 
-import java.util.List;
-
 import com.example.entity.MovieEntity;
 
 import org.springframework.data.domain.Page;
@@ -15,9 +13,5 @@ public interface MovieRepository extends JpaRepository<MovieEntity, Long> {
     Page<MovieEntity> findByMovieStateEntity_Mscode(Long mscode, Pageable pageable);
 
     // 제목별
-    // List<MovieEntity> findByMtitleContaining(String title);
-
-    //
     Page<MovieEntity> findByMtitleContaining(String title, Pageable pageable);
-    // , Pageable pageable);
 }

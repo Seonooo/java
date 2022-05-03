@@ -439,13 +439,4 @@ public class MovieServiceImpl implements MovieService {
         }
     }
 
-    // @Override
-    // public List<MovieEntity> selectMoviesTitle(String title) {
-    // try {
-    // return movieRepository.findByMtitleContaining(title)
-    // } catch (Exception e) {
-    // //TODO: handle exception
-    // }
-    // }
-
 }

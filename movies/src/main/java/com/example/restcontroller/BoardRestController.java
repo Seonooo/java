@@ -1,11 +1,9 @@
 package com.example.restcontroller;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.example.entity.BoardEntity;
-import com.example.entity.BoardProjection;
 import com.example.entity.MemberEntity;
 import com.example.jwt.jwtUtil;
 import com.example.repository.BoardRepository;

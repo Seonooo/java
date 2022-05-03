@@ -1,7 +1,5 @@
 package com.example.service;
 
-import java.util.List;
-
 import com.example.entity.MovieCategoryEntity;
 import com.example.entity.MovieEntity;
 
@@ -42,9 +40,6 @@ public interface MovieService {
 
     // 영화 제목별
     public Page<MovieEntity> selectMovieTitle(Integer page, Integer size, String title);
-
-    //
-    // public List<MovieEntity> selectMoviesTitle(String title);
 
     // 영화 포스터 등록
     public int insertMoviePoster();
