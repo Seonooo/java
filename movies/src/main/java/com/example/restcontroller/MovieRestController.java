@@ -9,6 +9,8 @@ import com.example.entity.MovieEntity;
 import com.example.service.MovieService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -118,10 +120,10 @@ public class MovieRestController {
             // page받아오기, 페이지에 영화5개씩
             @RequestParam(name = "page", defaultValue = "1") int page,
             @RequestParam(name = "size", defaultValue = "10") int size,
-            @RequestParam(name = "sort", defaultValue = "1") int sort,
-            @RequestParam(name = "genre", defaultValue = "0") long genre,
+            @RequestParam(name = "sort", defaultValue = "1", required = false) int sort,
+            @RequestParam(name = "genre", defaultValue = "0", required = false) long genre,
             @RequestParam(name = "mscode", defaultValue = "1", required = false) long mscode,
-            @RequestParam(name = "title", defaultValue = "") String title) {
+            @RequestParam(name = "title", defaultValue = "", required = false) String title) {
         Map<String, Object> map = new HashMap<>();
         map.put("status", 0);
         try {
@@ -132,11 +134,14 @@ public class MovieRestController {
             if (genre > 0) {
                 // 장르별 리스트
                 if (sort == 1) {
-                    List<MovieCategoryEntity> movies = movieService.selectMovieGenre(page - 1, size,
-                            genre).getContent();
+                    Page<MovieCategoryEntity> movies = movieService.selectMovieGenre(page - 1, size, genre);
+                    List<MovieCategoryEntity> genreOfMoives = movies.getContent();
+                    int total = movies.getTotalPages();
+
                     if (movies != null) {
                         map.put("status", 200);
-                        map.put("movies", movies);
+                        map.put("movies", genreOfMoives);
+                        map.put("total", total);
                     }
                 }
             }
@@ -144,29 +149,40 @@ public class MovieRestController {
             else if (genre == 0) {
                 // 상영 상태별 리스트
                 if (sort == 2) {
-                    List<MovieEntity> movies = movieService.selectMovieState(page - 1, size, mscode).getContent();
+                    Page<MovieEntity> movies = movieService.selectMovieState(page - 1, size, mscode);
+                    List<MovieEntity> stateOfMovies = movies.getContent();
+                    int total = movies.getTotalPages();
                     if (movies != null) {
                         map.put("status", 200);
-                        map.put("movies", movies);
+                        map.put("movies", stateOfMovies);
+                        map.put("total", total);
                     }
-                } else if (title.length() > 1) {
-                    List<MovieEntity> movies = movieService.selectMovieTitle(page, size, title).getContent();
+                }
+                // 제목 검색리스트
+                else if (title.length() >= 1) {
+                    Page<MovieEntity> movies = movieService.selectMovieTitle(page - 1, size, title);
+                    List<MovieEntity> titleOfMovies = movies.getContent();
+                    int total = movies.getTotalPages();
                     if (movies != null) {
                         map.put("status", 200);
-                        map.put("movies", movies);
+                        map.put("movies", titleOfMovies);
+                        map.put("total", total);
                     }
                 }
                 // 전체 리스트
                 else {
-                    List<MovieEntity> movies = movieService.selectMovies(page - 1,
-                            size).getContent();
-                    if (movies != null) {
+                    Page<MovieEntity> movies = movieService.selectMovies(page - 1, size);
+                    List<MovieEntity> moviesInPage = movies.getContent();
+                    int total = movies.getTotalPages();
+                    if (moviesInPage != null) {
                         map.put("status", 200);
-                        map.put("movies", movies);
+                        map.put("movies", moviesInPage);
+                        map.put("total", total);
                     }
                 }
 
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

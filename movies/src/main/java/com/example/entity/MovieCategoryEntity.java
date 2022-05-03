@@ -19,13 +19,13 @@ public class MovieCategoryEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_MOVIECATEGORY")
-    private Long mcCode;
+    private Long mccode;
 
     @ManyToOne
-    @JoinColumn(name = "m_code")
+    @JoinColumn(name = "mcode")
     private MovieEntity movieEntity;
 
     @ManyToOne
-    @JoinColumn(name = "c_code")
+    @JoinColumn(name = "ccode")
     private CategoryEntity categoryEntity;
 }

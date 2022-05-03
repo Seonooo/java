@@ -1,5 +1,7 @@
 package com.example.repository;
 
+import java.util.List;
+
 import com.example.entity.MovieEntity;
 
 import org.springframework.data.domain.Page;
@@ -10,8 +12,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MovieRepository extends JpaRepository<MovieEntity, Long> {
     // 상영상태별
-    Page<MovieEntity> findByMovieStateEntity_msCode(Long mscode, Pageable pageable);
+    Page<MovieEntity> findByMovieStateEntity_Mscode(Long mscode, Pageable pageable);
 
     // 제목별
-    Page<MovieEntity> findBymTitleLike(String title, Pageable pageable);
+    // List<MovieEntity> findByMtitleContaining(String title);
+
+    //
+    Page<MovieEntity> findByMtitleContaining(String title, Pageable pageable);
+    // , Pageable pageable);
 }

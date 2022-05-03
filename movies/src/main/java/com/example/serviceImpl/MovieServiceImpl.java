@@ -179,6 +179,9 @@ public class MovieServiceImpl implements MovieService {
                 mEntity.setMrelease(cal.getTime());
                 System.out.println("개봉일 : =========>" + cal.getTime().toString());
 
+                // 상영상태 : 기본값 상영중
+                mEntity.setMovieStateEntity(movieStateRepository.findById(1L).orElse(null));
+
                 // 마감일
                 cal.add(Calendar.MONTH, 2);
                 mEntity.setMdeadline(cal.getTime());
@@ -354,7 +357,7 @@ public class MovieServiceImpl implements MovieService {
     public Page<MovieEntity> selectMovies(Integer page, Integer size) {
         try {
             // 랭킹 1위부터
-            PageRequest pageRequest = PageRequest.of(page, size, Sort.by("mRank").ascending());
+            PageRequest pageRequest = PageRequest.of(page, size, Sort.by("Mrank").ascending());
             Page<MovieEntity> movie = movieRepository.findAll(pageRequest);
             return movie;
         } catch (Exception e) {
@@ -367,7 +370,7 @@ public class MovieServiceImpl implements MovieService {
     public Page<MovieCategoryEntity> selectMovieGenre(Integer page, Integer size, Long gcode) {
         try {
             Pageable pageable = PageRequest.of(page, size);
-            Page<MovieCategoryEntity> categoryMovies = movieCategoryRepository.findByCategoryEntity_cCode(gcode,
+            Page<MovieCategoryEntity> categoryMovies = movieCategoryRepository.findByCategoryEntity_Ccode(gcode,
                     pageable);
             return categoryMovies;
         } catch (Exception e) {
@@ -380,7 +383,7 @@ public class MovieServiceImpl implements MovieService {
     public Page<MovieEntity> selectMovieState(Integer page, Integer size, Long mscode) {
         try {
             Pageable pageable = PageRequest.of(page, size);
-            Page<MovieEntity> stateMovies = movieRepository.findByMovieStateEntity_msCode(mscode, pageable);
+            Page<MovieEntity> stateMovies = movieRepository.findByMovieStateEntity_Mscode(mscode, pageable);
             return stateMovies;
         } catch (Exception e) {
             e.printStackTrace();
@@ -391,8 +394,9 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public Page<MovieEntity> selectMovieTitle(Integer page, Integer size, String title) {
         try {
-            Pageable pageable = PageRequest.of(page, size);
-            Page<MovieEntity> titleMovies = movieRepository.findBymTitleLike(title, pageable);
+            Pageable pageable = PageRequest.of(page, size, Sort.by("Mtitle").ascending());
+            Page<MovieEntity> titleMovies = movieRepository.findByMtitleContaining(title, pageable);
+
             return titleMovies;
         } catch (Exception e) {
             e.printStackTrace();
@@ -410,5 +414,38 @@ public class MovieServiceImpl implements MovieService {
             return 0;
         }
     }
+
+    @Override
+    public int insertGenre() {
+        try {
+            String naverGenreUrl = "https://movie.naver.com/movie/sdb/browsing/bmovie_genre.naver";
+            Document naverGenres = Jsoup.connect(naverGenreUrl).get();
+            Elements genre = naverGenres.select(".directory_item_other td");
+            Elements genreCode = naverGenres.select(".directory_item_other a");
+            for (int i = 0; i < genre.size(); i++) {
+                CategoryEntity categoryEntity = new CategoryEntity();
+                String gen = genre.get(i).text();
+                String code = genreCode.get(i).attr("href").toString();
+                System.out.println(gen.substring(0, gen.indexOf("(")));
+                System.out.println(code.substring(code.lastIndexOf("=") + 1));
+                categoryEntity.setCcategory(gen.substring(0, gen.indexOf("(")));
+                categoryEntity.setCcode(Long.parseLong(code.substring(code.lastIndexOf("=") + 1)));
+                categoryRepository.save(categoryEntity);
+            }
+            return 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    // @Override
+    // public List<MovieEntity> selectMoviesTitle(String title) {
+    // try {
+    // return movieRepository.findByMtitleContaining(title)
+    // } catch (Exception e) {
+    // //TODO: handle exception
+    // }
+    // }
 
 }

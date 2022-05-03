@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.example.entity.MovieCategoryEntity;
 import com.example.entity.MovieEntity;
-import com.example.entity.MovieStateEntity;
 
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -15,13 +14,13 @@ public interface MovieService {
     public int insertMovies(String naverRankUrl);
 
     // 영화 한개 등록
-    public int insertMovie(MovieEntity movie, String nation, Long filmRating, Long gpa, Long mscode);
+    public int insertMovie(MovieEntity movie, String nation, Long filmRating, Long gpa, Long msCode);
 
     // 영화 좋아요수 업데이트
     public int updateHit(Long code);
 
     // 영화 업데이트(마감일)
-    public int updateMovie(MovieEntity movie, Long mscode);
+    public int updateMovie(MovieEntity movie, Long msCode);
 
     // 영화 한개 삭제
     public int deleteMovie(Long code);
@@ -39,12 +38,18 @@ public interface MovieService {
     public Page<MovieCategoryEntity> selectMovieGenre(Integer page, Integer size, Long mcCode);
 
     // 영화 상태별(상영여부)
-    public Page<MovieEntity> selectMovieState(Integer page, Integer size, Long mscode);
+    public Page<MovieEntity> selectMovieState(Integer page, Integer size, Long msCode);
 
     // 영화 제목별
     public Page<MovieEntity> selectMovieTitle(Integer page, Integer size, String title);
 
+    //
+    // public List<MovieEntity> selectMoviesTitle(String title);
+
     // 영화 포스터 등록
     public int insertMoviePoster();
+
+    // 영화 장르 크롤링
+    public int insertGenre();
 
 }

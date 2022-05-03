@@ -15,13 +15,14 @@
     <div style="padding: 20px;">
         <h3>영화등록</h3>
         <hr />
-
-        <a th:href="@{/crawling/insert}">영화등록</a>
         <form th:action="@{/crawling/insert}" method="post">
             <input type="submit" value="영화등록">
         </form>
         <form th:action="@{/crawling/delete}" method="post">
             <input type="submit" value="영화삭제">
+        </form>
+        <form th:action="@{/crawling/genre}" method="post">
+            <input type="submit" value="장르등록">
         </form>
     </div>
 

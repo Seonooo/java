@@ -15,9 +15,9 @@ public class MovieStateEntity {
     // 영화상태코드
     // 0 => 개봉전, 1 => 상영중, 2 => 상영종료
     @Id
-    private Long Mscode;
+    private Long mscode;
 
     // 상태
     @Column(length = 20)
-    private String Msstate;
+    private String msstate;
 }
