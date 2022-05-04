@@ -1,21 +1,27 @@
 package com.example.restcontroller;
 
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.example.entity.MovieCategoryEntity;
 import com.example.entity.MovieEntity;
+import com.example.entity.PosterEntity;
 import com.example.service.MovieService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping(value = "/api/movie")
@@ -211,11 +217,77 @@ public class MovieRestController {
     }
 
     // 영화 포스터 등록하기
+    // http://127.0.0.1:9090/ROOT/api/movie/poster
     @RequestMapping(value = "/poster", method = { RequestMethod.POST }, consumes = { MediaType.ALL_VALUE }, produces = {
             MediaType.MULTIPART_FORM_DATA_VALUE })
-    public Map<String, Object> moviePoster() {
+    public Map<String, Object> insertMoviePosters(@ModelAttribute PosterEntity[] poster,
+            @RequestHeader(name = "RTOKEN") String rtoken, @RequestHeader(name = "TOKEN") String token,
+            @RequestParam(name = "mcode", required = true) Long mcode,
+            @RequestParam(name = "file") MultipartFile[] files) {
         Map<String, Object> map = new HashMap<>();
         try {
+            // 권한 확인후 실행
+            if (!rtoken.equals("ADMIN") && !token.isEmpty()) {
+                int ret = movieService.insertMoviePoster(files, mcode);
+                if (ret == 1) {
+                    map.put("status", 200);
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return map;
+    }
+
+    // 대표 이미지 설정하기(Phead값 변경)
+    // http://127.0.0.1:9090/ROOT/api/movie/main_poster
+    @RequestMapping(value = "/main_poster", method = { RequestMethod.PUT }, consumes = {
+            MediaType.ALL_VALUE }, produces = {
+                    MediaType.APPLICATION_JSON_VALUE })
+    public Map<String, Object> updateMainPoster(@RequestHeader(name = "RTOKEN") String rtoken,
+            @RequestHeader(name = "TOKEN") String token, @RequestParam(name = "pcode") Long pcode) {
+        Map<String, Object> map = new HashMap<>();
+        try {
+            // 권한 확인후 실행
+            if (!rtoken.equals("ADMIN") && !token.isEmpty()) {
+                int ret = movieService.updateMovieMainPoster(pcode);
+                if (ret == 1) {
+                    map.put("status", 200);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return map;
+    }
+
+    // 영화 포스터 이미지 가져오기
+    // http://127.0.0.1:9090/ROOT/api/movie/poster
+    @RequestMapping(value = "/main_poster", method = { RequestMethod.GET }, consumes = {
+            MediaType.ALL_VALUE }, produces = {
+                    MediaType.APPLICATION_JSON_VALUE })
+    public Map<String, Object> moviePoster(
+            @RequestParam(name = "mcode") Long mcode, @RequestParam(name = "page") Integer page,
+            @RequestParam(name = "size") Integer size) {
+        Map<String, Object> map = new HashMap<>();
+        try {
+            Page<PosterEntity> postersPage = movieService.selectMoviePosters(mcode, page, size);
+            List<PosterEntity> posters = postersPage.getContent();
+            int pages = postersPage.getTotalPages();
+            for (PosterEntity post : posters) {
+                HttpHeaders headers = new HttpHeaders();
+                if (post.getPimagetype().equals("image/jpeg")) {
+                    headers.setContentType(MediaType.IMAGE_JPEG);
+                } else if (post.getPimagetype().equals("image/png")) {
+                    headers.setContentType(MediaType.IMAGE_PNG);
+                } else if (post.getPimagetype().equals("image/gif")) {
+                    headers.setContentType(MediaType.IMAGE_GIF);
+                } else {
+
+                }
+            }
+            map.put("status", 200);
 
         } catch (Exception e) {
             e.printStackTrace();

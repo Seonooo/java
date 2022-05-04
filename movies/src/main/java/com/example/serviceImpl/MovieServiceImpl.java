@@ -33,6 +33,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class MovieServiceImpl implements MovieService {
@@ -405,8 +406,24 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public int insertMoviePoster() {
+    public int insertMoviePoster(MultipartFile[] files, Long mcode) {
         try {
+            List<PosterEntity> posterEntities = new ArrayList<>();
+            PosterEntity posterEntity = new PosterEntity();
+            MovieEntity movieEntity = movieRepository.findById(mcode).orElse(null);
+            // 파일이 있는경우
+            if (files != null) {
+                for (MultipartFile file : files) {
+                    posterEntity.setMovieEntity(movieEntity);
+                    posterEntity.setPimage(file.getBytes());
+                    posterEntity.setPimagename(file.getOriginalFilename());
+                    posterEntity.setPimagesize(file.getSize());
+                    posterEntity.setPimagetype(file.getContentType());
+                    posterEntity.setPhead(posterRepository.findFirstByOrderByPheadDesc().getPhead() + 1L);
+                    posterEntities.add(posterEntity);
+                }
+                posterRepository.saveAll(posterEntities);
+            }
 
             return 1;
         } catch (Exception e) {
@@ -436,6 +453,41 @@ public class MovieServiceImpl implements MovieService {
         } catch (Exception e) {
             e.printStackTrace();
             return 0;
+        }
+    }
+
+    @Override
+    public int updateMovieMainPoster(Long pcode) {
+        try {
+            PosterEntity posterEntity = posterRepository.findById(pcode).orElse(null);
+            PosterEntity posterhead = posterRepository.findFirstByOrderByPheadDesc();
+            posterEntity.setPhead(posterhead.getPhead() + 1);
+            posterRepository.save(posterEntity);
+            return 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    @Override
+    public PosterEntity selectMoviePoster() {
+        try {
+            return posterRepository.findFirstByOrderByPheadDesc();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public Page<PosterEntity> selectMoviePosters(Long mcode, Integer page, Integer size) {
+        try {
+            Pageable pageable = PageRequest.of(page, size);
+            return posterRepository.findByMovieEntity_Mcode(mcode, pageable);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 

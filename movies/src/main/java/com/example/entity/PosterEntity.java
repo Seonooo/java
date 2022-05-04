@@ -39,7 +39,7 @@ public class PosterEntity {
     @Column(length = 100)
     private String pimagename;
     // 대표이미지
-    private Long phead;
+    private Long phead = 1L;
     // 이미지 url
     private String pimageUrl;
     // 등록일

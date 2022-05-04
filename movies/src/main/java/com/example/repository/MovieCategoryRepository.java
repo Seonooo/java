@@ -10,5 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MovieCategoryRepository extends JpaRepository<MovieCategoryEntity, Long> {
 
+    // 영화 - 장르 리스트
     Page<MovieCategoryEntity> findByCategoryEntity_Ccode(Long ccode, Pageable pageable);
 }

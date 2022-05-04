@@ -2,9 +2,11 @@ package com.example.service;
 
 import com.example.entity.MovieCategoryEntity;
 import com.example.entity.MovieEntity;
+import com.example.entity.PosterEntity;
 
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public interface MovieService {
@@ -42,7 +44,16 @@ public interface MovieService {
     public Page<MovieEntity> selectMovieTitle(Integer page, Integer size, String title);
 
     // 영화 포스터 등록
-    public int insertMoviePoster();
+    public int insertMoviePoster(MultipartFile[] files, Long mcode);
+
+    // 대표이미지 가져오기
+    public PosterEntity selectMoviePoster();
+
+    // 이미지 리스트 가져오기
+    public Page<PosterEntity> selectMoviePosters(Long mcode, Integer page, Integer size);
+
+    // 포스터 대표이미지 설정
+    public int updateMovieMainPoster(Long pcode);
 
     // 영화 장르 크롤링
     public int insertGenre();
