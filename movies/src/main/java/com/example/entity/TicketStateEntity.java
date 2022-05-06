@@ -13,6 +13,7 @@ import lombok.Data;
 @Table(name = "TICKET_STATE")
 public class TicketStateEntity {
     // 예매상태
+    // 0 -> 결제완료 / 1 -> 결제취소 / 2-> 기간만료 /
     @Column(length = 10)
     private String tsstate;
     // 예매상태코드

@@ -12,6 +12,7 @@ import lombok.Data;
 @Table(name = "MEMBERSHIP")
 public class MembershipEntity {
     // 회원등급코드
+    // 브론즈 / 실버 / 골드 / 플레티넘 ...
     @Id
     @Column(length = 10)
     private String mscode;

@@ -491,4 +491,44 @@ public class MovieServiceImpl implements MovieService {
         }
     }
 
+    @Override
+    public int deleteMoviePoster(Long pcode) {
+        try {
+            posterRepository.deleteById(pcode);
+            return 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    @Override
+    public int updateMoviePoster(PosterEntity posterEntity) {
+        try {
+            PosterEntity newPosterEntity = posterRepository.getById(posterEntity.getPcode());
+            // 포스터 url을 받은경우 : 포스터url만 변경시켜주기
+            if (posterEntity.getPimageUrl().length() > 0) {
+                newPosterEntity.setPimageUrl(posterEntity.getPimageUrl());
+                // 포스터 image가 이미 들어있는 경우 : 포스터 imageurl이 있으므로 삭제시켜주기
+                if (posterEntity.getPimagesize() > 0) {
+                    posterEntity.setPimage(null);
+                    posterEntity.setPimagename(null);
+                    posterEntity.setPimagesize(null);
+                    posterEntity.setPimagetype(null);
+                }
+            }
+            // 포스터를 image로 받은경우 : 포스터 image를 업그레이드하고 url은 삭제시켜주기
+            else {
+                newPosterEntity.setPimage(posterEntity.getPimage());
+                newPosterEntity.setPimagename(posterEntity.getPimagename());
+                newPosterEntity.setPimagesize(posterEntity.getPimagesize());
+                newPosterEntity.setPimagetype(posterEntity.getPimagetype());
+                newPosterEntity.setPimageUrl(null);
+            }
+            return 1;
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
 }

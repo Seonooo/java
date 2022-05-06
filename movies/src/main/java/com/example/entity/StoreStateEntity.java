@@ -12,6 +12,7 @@ import lombok.Data;
 @Table(name = "STORE_STATE")
 public class StoreStateEntity {
     // 상품상태코드
+    // 0 -> 판매중 / 1 -> 재고소진
     @Id
     private Long sstcode;
     // 상품상태

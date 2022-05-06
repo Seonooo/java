@@ -1,6 +1,5 @@
 package com.example.restcontroller;
 
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -264,29 +263,49 @@ public class MovieRestController {
 
     // 영화 포스터 이미지 가져오기
     // http://127.0.0.1:9090/ROOT/api/movie/poster
+    // @RequestMapping(value = "/main_poster", method = { RequestMethod.GET },
+    // consumes = {
+    // MediaType.ALL_VALUE }, produces = {
+    // MediaType.APPLICATION_JSON_VALUE })
+    // public Map<String, Object> moviePosterGet(
+    // @RequestParam(name = "mcode") Long mcode, @RequestParam(name = "page")
+    // Integer page,
+    // @RequestParam(name = "size") Integer size) {
+    // Map<String, Object> map = new HashMap<>();
+    // try {
+    // Page<PosterEntity> postersPage = movieService.selectMoviePosters(mcode, page,
+    // size);
+    // List<PosterEntity> posters = postersPage.getContent();
+    // int pages = postersPage.getTotalPages();
+    // for (PosterEntity post : posters) {
+    // HttpHeaders headers = new HttpHeaders();
+    // if (post.getPimagetype().equals("image/jpeg")) {
+    // headers.setContentType(MediaType.IMAGE_JPEG);
+    // } else if (post.getPimagetype().equals("image/png")) {
+    // headers.setContentType(MediaType.IMAGE_PNG);
+    // } else if (post.getPimagetype().equals("image/gif")) {
+    // headers.setContentType(MediaType.IMAGE_GIF);
+    // } else {
+
+    // }
+    // }
+    // map.put("status", 200);
+
+    // } catch (Exception e) {
+    // e.printStackTrace();
+    // }
+    // return map;
+    // }
+
+    // 영화 포스터 삭제하기
     @RequestMapping(value = "/main_poster", method = { RequestMethod.GET }, consumes = {
             MediaType.ALL_VALUE }, produces = {
                     MediaType.APPLICATION_JSON_VALUE })
-    public Map<String, Object> moviePoster(
-            @RequestParam(name = "mcode") Long mcode, @RequestParam(name = "page") Integer page,
-            @RequestParam(name = "size") Integer size) {
+    public Map<String, Object> deleteMoviePoster(
+            @RequestParam(name = "mcode") Long mcode, @RequestParam(name = "pcode") Long pcode) {
         Map<String, Object> map = new HashMap<>();
         try {
-            Page<PosterEntity> postersPage = movieService.selectMoviePosters(mcode, page, size);
-            List<PosterEntity> posters = postersPage.getContent();
-            int pages = postersPage.getTotalPages();
-            for (PosterEntity post : posters) {
-                HttpHeaders headers = new HttpHeaders();
-                if (post.getPimagetype().equals("image/jpeg")) {
-                    headers.setContentType(MediaType.IMAGE_JPEG);
-                } else if (post.getPimagetype().equals("image/png")) {
-                    headers.setContentType(MediaType.IMAGE_PNG);
-                } else if (post.getPimagetype().equals("image/gif")) {
-                    headers.setContentType(MediaType.IMAGE_GIF);
-                } else {
 
-                }
-            }
             map.put("status", 200);
 
         } catch (Exception e) {
@@ -294,5 +313,7 @@ public class MovieRestController {
         }
         return map;
     }
+
+    // 영화 포스터 변경하기
 
 }

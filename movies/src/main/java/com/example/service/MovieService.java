@@ -55,6 +55,12 @@ public interface MovieService {
     // 포스터 대표이미지 설정
     public int updateMovieMainPoster(Long pcode);
 
+    // 포스터 1개 삭제
+    public int deleteMoviePoster(Long pcode);
+
+    // 포스터 1개 업데이트
+    public int updateMoviePoster(PosterEntity posterEntity);
+
     // 영화 장르 크롤링
     public int insertGenre();
 

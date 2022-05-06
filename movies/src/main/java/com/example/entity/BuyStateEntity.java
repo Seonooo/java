@@ -21,4 +21,9 @@ public class BuyStateEntity {
     // @JsonBackReference
     // @OneToMany(mappedBy = "buyStateEntity")
     // private List<BuyEntity> buyEntityList = new ArrayList<>();
+
+    // 0 장바구니
+    // 1 결제완료
+    // 2 결제취소
+    // 3 배송완료
 }
